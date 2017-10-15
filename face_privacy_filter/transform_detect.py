@@ -32,12 +32,11 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
         return {'include_image': self.include_image}
 
     @staticmethod
-    def generate_in_df(path_image=""):
+    def generate_in_df(path_image="", bin_stream=b""):
         # munge stream and mimetype into input sample
-        binStream = b""
         if path_image and os.path.exists(path_image):
-            binStream = open(path_image, 'rb').read()
-        return pd.DataFrame([['image/jpeg', binStream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
+            bin_stream = open(path_image, 'rb').read()
+        return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
     def generate_out_dict(self, idx=-1, x=0, y=0, w=0, h=0, image=0):
         return {FaceDetectTransform.COL_FACE_IDX: idx, FaceDetectTransform.COL_FACE_X: x,
