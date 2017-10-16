@@ -51,15 +51,15 @@ composed together for operation.
 ```
 * Dump the `pixelate` model to disk.
 ```
-./bin/run_local.sh -d model_pix -f pixelate
+./bin/run_local.sh -d model_pix -f pixelate -i image.jpg -p predict.csv
 ```
 * Evaluate the `detect` model from disk and a previously produced detect object
 ```
-./bin/run_local.sh -d model_detect -f detect -p output.csv -i web_demo/images/face_DiCaprio.jpg
+./bin/run_local.sh -d model_detect -p output.csv -i web_demo/images/face_DiCaprio.jpg
 ```
 * Example for evaluating the `pixelate` model from disk and a previously produced detect object
 ```
-./bin/run_local.sh -d model_pix -f pixelate -i detect.csv -p output.jpg --csv_input
+./bin/run_local.sh -d model_pix -i detect.csv -p output.jpg --csv_input
 ```
 
 
@@ -80,15 +80,21 @@ and visualize the results of image classification.
 
 * [DiCaprio celebrity face sample](web_demo/images/face_DiCaprio.jpg) [wikimedia source](https://en.wikipedia.org/wiki/Celebrity#/media/File:Leonardo_DiCaprio_visited_Goddard_Saturday_to_discuss_Earth_science_with_Piers_Sellers_(26105091624)_cropped.jpg)
 * [Schwarzenegger celebrity face sample](web_demo/images/face_Schwarzenegger.jpg) [wikimedia source](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg)
+* [Commercial example](web_demo/images/commercial.jpg) [youtube source](https://www.youtube.com/watch?v=34KfCNapnUg)
+
 
 <table width='100%'>
 <thead>
 <tr><td width='49%'>before</td><td width='49%'>after</td></tr>
 </thead>
 <tbody>
-<tr style='max-height:100px;'>
+<tr >
     <td><img src="web_demo/images/face_DiCaprio.jpg" alt="raw" height="100px;"/></td>
     <td><img src="web_demo/images/face_DiCaprio_pixelate.jpg" alt="pixelate" height="100px;"/></td>
+</tr>
+<tr >
+    <td><img src="web_demo/images/commercial.jpg" alt="raw" height="100px;"/></td>
+    <td><img src="web_demo/images/commercial_pixelate.jpg" alt="pixelate" height="100px;"/></td>
 </tr>
 </tbody>
 </table>

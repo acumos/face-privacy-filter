@@ -56,6 +56,7 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     def suppress_image(df):
         keep_col = [FaceDetectTransform.COL_FACE_X, FaceDetectTransform.COL_FACE_Y,
                     FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
+                    FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
                     FaceDetectTransform.COL_REGION_IDX, FaceDetectTransform.COL_IMAGE_IDX]
         blank_cols = [col for col in df.columns if col not in keep_col]
         # set columns that aren't in our known column list to empty strings; search where face index==-1 (no face)
@@ -111,7 +112,7 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
 
             df = pd.DataFrame()  # start with empty DF for this image
             if self.include_image:  # create and append the image if that's requested
-                dict_image = FaceDetectTransform.generate_out_dict(w=img.shape[0], h=img.shape[1], image=image_idx)
+                dict_image = FaceDetectTransform.generate_out_dict(w=img.shape[1], h=img.shape[0], image=image_idx)
                 dict_image[FaceDetectTransform.COL_IMAGE_MIME] = X[FaceDetectTransform.COL_IMAGE_MIME][image_idx]
                 dict_image[FaceDetectTransform.COL_IMAGE_DATA] = X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]
                 df = pd.DataFrame([dict_image])
@@ -154,6 +155,6 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
            https://stackoverflow.com/a/43024993
         """
         from ast import literal_eval
-        if bytearray_string.startswith("b'"):
+        if type(bytearray_string)==str and bytearray_string.startswith("b'"):
             return bytearray(literal_eval(bytearray_string))
         return bytearray_string
