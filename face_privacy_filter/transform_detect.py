@@ -18,10 +18,11 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     COL_FACE_Y = 'y'
     COL_FACE_W = 'w'
     COL_FACE_H = 'h'
-    COL_FACE_IDX = 'region'
+    COL_REGION_IDX = 'region'
     COL_IMAGE_IDX = 'image'
     COL_IMAGE_MIME = 'mime_type'
     COL_IMAGE_DATA = 'binary_stream'
+    VAL_REGION_IMAGE_ID = -1
 
     def __init__(self, cascade_path=None, include_image=True):
         self.include_image = include_image    # should output transform include image?
@@ -38,8 +39,15 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
             bin_stream = open(path_image, 'rb').read()
         return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
-    def generate_out_dict(self, idx=-1, x=0, y=0, w=0, h=0, image=0):
-        return {FaceDetectTransform.COL_FACE_IDX: idx, FaceDetectTransform.COL_FACE_X: x,
+    @staticmethod
+    def generate_out_image(row, path_image):
+        # take image row and output to disk
+        with open(path_image, 'wb') as f:
+            f.write(row[FaceDetectTransform.COL_IMAGE_DATA][0])
+
+    @staticmethod
+    def generate_out_dict(idx=VAL_REGION_IMAGE_ID, x=0, y=0, w=0, h=0, image=0):
+        return {FaceDetectTransform.COL_REGION_IDX: idx, FaceDetectTransform.COL_FACE_X: x,
                 FaceDetectTransform.COL_FACE_Y: y, FaceDetectTransform.COL_FACE_W: w, FaceDetectTransform.COL_FACE_H: h,
                 FaceDetectTransform.COL_IMAGE_IDX: image,
                 FaceDetectTransform.COL_IMAGE_MIME: '', FaceDetectTransform.COL_IMAGE_DATA: ''}
@@ -48,15 +56,15 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     def suppress_image(df):
         keep_col = [FaceDetectTransform.COL_FACE_X, FaceDetectTransform.COL_FACE_Y,
                     FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
-                    FaceDetectTransform.COL_FACE_IDX, FaceDetectTransform.COL_IMAGE_IDX]
+                    FaceDetectTransform.COL_REGION_IDX, FaceDetectTransform.COL_IMAGE_IDX]
         blank_cols = [col for col in df.columns if col not in keep_col]
         # set columns that aren't in our known column list to empty strings; search where face index==-1 (no face)
-        df.loc[df[FaceDetectTransform.COL_FACE_IDX]==-1,blank_cols] = ""
+        df.loc[df[FaceDetectTransform.COL_REGION_IDX]==FaceDetectTransform.VAL_REGION_IMAGE_ID,blank_cols] = ""
         return df
 
     @property
     def output_names_(self):
-        return [FaceDetectTransform.COL_FACE_IDX, FaceDetectTransform.COL_FACE_X, FaceDetectTransform.COL_FACE_Y,
+        return [FaceDetectTransform.COL_REGION_IDX, FaceDetectTransform.COL_FACE_X, FaceDetectTransform.COL_FACE_Y,
                  FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
                  FaceDetectTransform.COL_IMAGE_IDX, FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA]
 
@@ -96,7 +104,6 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
 
         dfReturn = None
         for image_idx in range(len(X)):
-            # image_set = X[:, image_idx]
             file_bytes = np.asarray(bytearray(X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]), dtype=np.uint8)
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             # img = cv2.imread(image_set[1])
@@ -104,20 +111,20 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
 
             df = pd.DataFrame()  # start with empty DF for this image
             if self.include_image:  # create and append the image if that's requested
-                dict_image = self.generate_out_dict(w=img.shape[0], h=img.shape[1], image=image_idx)
-                dict_image[self.mime_col] = image_set[0]
-                dict_image[self.data_col] = image_set[1]
+                dict_image = FaceDetectTransform.generate_out_dict(w=img.shape[0], h=img.shape[1], image=image_idx)
+                dict_image[FaceDetectTransform.COL_IMAGE_MIME] = X[FaceDetectTransform.COL_IMAGE_MIME][image_idx]
+                dict_image[FaceDetectTransform.COL_IMAGE_DATA] = X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]
                 df = pd.DataFrame([dict_image])
             for idxF in range(len(faces)):  # walk through detected faces
                 face_rect = faces[idxF]
-                df = df.append(pd.DataFrame([self.generate_out_dict(idxF, face_rect[0], face_rect[1],
+                df = df.append(pd.DataFrame([FaceDetectTransform.generate_out_dict(idxF, face_rect[0], face_rect[1],
                                                                     face_rect[2], face_rect[3], image=image_idx)]),
                                ignore_index=True)
             if dfReturn is None:  # create an NP container for all image samples + features
                 dfReturn = df.reindex_axis(self.output_names_, axis=1)
             else:
                 dfReturn = dfReturn.append(df, ignore_index=True)
-            print("IMAGE {:} found {:} total rows".format(image_idx, len(df)))
+            #print("IMAGE {:} found {:} total rows".format(image_idx, len(df)))
 
         return dfReturn
 
@@ -137,3 +144,16 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
         #for (x, y, w, h) in faces:
         #    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         return faces
+
+    #############################################
+    ## helper for i/o
+    @staticmethod
+    def read_byte_arrays(bytearray_string):
+        """Method to recover bytes from pandas read/cast function:
+            inputDf = pd.read_csv(config['input'], converters:{FaceDetectTransform.COL_IMAGE_DATA:FaceDetectTransform.read_byte_arrays})
+           https://stackoverflow.com/a/43024993
+        """
+        from ast import literal_eval
+        if bytearray_string.startswith("b'"):
+            return bytearray(literal_eval(bytearray_string))
+        return bytearray_string

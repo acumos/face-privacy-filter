@@ -18,8 +18,8 @@ script and has the following arguments.
 
 ```
 usage: run_face-privacy-filter_reference.py [-h] [-p PREDICT_PATH] [-i INPUT]
-                                            [-s] [-a PUSH_ADDRESS]
-                                            [-d DUMP_MODEL]
+                                            [-c] [-s] [-f {detect,pixelate}]
+                                            [-a PUSH_ADDRESS] [-d DUMP_MODEL]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -27,9 +27,12 @@ optional arguments:
                         save detections from model (model must be provided via
                         'dump_model')
   -i INPUT, --input INPUT
-                        absolute path to input image (only during prediction /
-                        dump)
+                        absolute path to input data (image or csv, only during
+                        prediction / dump)
+  -c, --csv_input       input as CSV format not an image
   -s, --suppress_image  do not create an extra row for a returned image
+  -f {detect,pixelate}, --function {detect,pixelate}
+                        which type of model to generate
   -a PUSH_ADDRESS, --push_address PUSH_ADDRESS
                         server address to push the model (e.g.
                         http://localhost:8887/v2/models)
@@ -39,10 +42,26 @@ optional arguments:
 
 
 ### Examples
-Example for dumping the `detect` model to disk.
+This single repo has a number of different models that can be
+composed together for operation.
+
+* Dump the `detect` model to disk.
 ```
-./bin/run_local.sh -d model
+./bin/run_local.sh -d model_detect -f detect
 ```
+* Dump the `pixelate` model to disk.
+```
+./bin/run_local.sh -d model_pix -f pixelate
+```
+* Evaluate the `detect` model from disk and a previously produced detect object
+```
+./bin/run_local.sh -d model_detect -f detect -p output.csv -i web_demo/images/face_DiCaprio.jpg
+```
+* Example for evaluating the `pixelate` model from disk and a previously produced detect object
+```
+./bin/run_local.sh -d model_pix -f pixelate -i detect.csv -p output.jpg --csv_input
+```
+
 
 
 ## Face-based Use Cases

@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 
 from face_privacy_filter.transform_detect import FaceDetectTransform
+from face_privacy_filter.transform_region import RegionTransform
 from face_privacy_filter._version import MODEL_NAME
 
 
@@ -27,8 +28,10 @@ def main(config={}):
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--predict_path', type=str, default='', help="save detections from model (model must be provided via 'dump_model')")
-    parser.add_argument('-i', '--input', type=str, default='',help='absolute path to input image (only during prediction / dump)')
+    parser.add_argument('-i', '--input', type=str, default='',help='absolute path to input data (image or csv, only during prediction / dump)')
+    parser.add_argument('-c', '--csv_input', dest='csv_input', action='store_true', default=False, help='input as CSV format not an image')
     parser.add_argument('-s', '--suppress_image', dest='suppress_image', action='store_true', default=False, help='do not create an extra row for a returned image')
+    parser.add_argument('-f', '--function', type=str, default='detect',help='which type of model to generate', choices=['detect', 'pixelate'])
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     #pargs, unparsed = parser.parse_known_args()
@@ -37,7 +40,12 @@ def main(config={}):
         print("Attempting to create new model for dump or push...")
 
         # refactor the raw samples from upstream image classifier
-        transform = FaceDetectTransform(include_image=not config['suppress_image'])
+        if config['function'] == "detect":
+            transform = FaceDetectTransform(include_image=not config['suppress_image'])
+        elif config['function'] == "pixelate":
+            transform = RegionTransform()
+        else:
+            print("Error: Functional mode '{:}' unknown, aborting create".format(config['function']))
         inputDf = transform.generate_in_df()
         pipeline, EXTRA_DEPS = model_create_pipeline(transform, "detect")
 
@@ -63,13 +71,20 @@ def main(config={}):
         print("Attempting predict/transform on input sample...")
         from cognita_client.wrap.load import load_model
         model = load_model(config['dump_model'])
-        inputDf = FaceDetectTransform.generate_in_df(config['input'])
+        if not config['csv_input']:
+            inputDf = FaceDetectTransform.generate_in_df(config['input'])
+        else:
+            inputDf = pd.read_csv(config['input'], converters={FaceDetectTransform.COL_IMAGE_DATA:FaceDetectTransform.read_byte_arrays})
         dfPred = model.transform.from_native(inputDf).as_native()
-        dfPred = FaceDetectTransform.suppress_image(dfPred)
 
         if config['predict_path']:
             print("Writing prediction to file '{:}'...".format(config['predict_path']))
-            dfPred.to_csv(config['predict_path'], sep=",", index=False)
+            if not config['csv_input']:
+                dfPred.to_csv(config['predict_path'], sep=",", index=False)
+            else:
+                FaceDetectTransform.generate_out_image(dfPred, config['predict_path'])
+        if not config['csv_input']:
+            dfPred = FaceDetectTransform.suppress_image(dfPred)
 
         if dfPred is not None:
             print("Predictions:\n{:}".format(dfPred))
