@@ -78,12 +78,12 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             #print(image_data)
             img = image_data['data']
             for r in image_data['regions']:  # loop through regions
-                x_max = min(r[0]+r[2], img.shape[0])
-                y_max = min(r[1]+r[3], img.shape[1])
+                x_max = min(r[0]+r[2], img.shape[1])
+                y_max = min(r[1]+r[3], img.shape[0])
                 if self.transform_mode=="pixelate":
                     block_size = round(max(img.shape[0], img.shape[2])/15)
-                    img[r[0]:x_max, r[1]:y_max] = \
-                        RegionTransform.pixelate_image(img[r[0]:x_max, r[1]:y_max], block_size)
+                    img[r[1]:y_max, r[0]:x_max] = \
+                        RegionTransform.pixelate_image(img[r[1]:y_max, r[0]:x_max], block_size)
 
             # for now, we hard code to jpg output; TODO: add more encoding output (or try to match source?)
             img_binary = cv2.imencode(".jpg", img)[1].tostring()
@@ -132,6 +132,8 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
     # http://www.jeffreythompson.org/blog/2012/02/18/pixelate-and-posterize-in-processing/
     @staticmethod
     def pixelate_image(img, blockSize):
+        if not img.shape[0] or not img.shape[1]:
+            return img
         ratio = (img.shape[1] / img.shape[0]) if img.shape[0] < img.shape[1] else (img.shape[0] / img.shape[1])
         blockHeight = round(blockSize * ratio)  # so that we cover all image
         for x in range(0, img.shape[0], blockSize):
