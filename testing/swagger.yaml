@@ -32,4 +32,5 @@ parameters:
     description: Binary image blob
     in: formData
     type: file
+    format: base64
     required: true

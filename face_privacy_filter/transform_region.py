@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
+import base64
 
 # NOTE: If this class were built in another model (e.g. another vendor, class, etc), we would need to
 #       *exactly match* the i/o for the upstream (detection) and downstream (this processing)
@@ -27,6 +28,9 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
     @staticmethod
     def generate_out_df(media_type="", bin_stream=b""):
         # munge stream and mimetype into input sample
+        bin_stream = base64.b64encode(bin_stream)
+        if type(bin_stream)==bytes:
+            bin_stream = bin_stream.decode()
         return pd.DataFrame([[media_type, bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
     @staticmethod
@@ -112,7 +116,11 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             if not len(image_row[FaceDetectTransform.COL_IMAGE_DATA]):  # must have valid image data
                 print("Error: RegionTransform expected image data, but found empty binary string {:}".format(nameG))
                 continue
-            file_bytes = np.asarray(bytearray(FaceDetectTransform.read_byte_arrays(image_row[FaceDetectTransform.COL_IMAGE_DATA][0])), dtype=np.uint8)
+            image_byte = image_row[FaceDetectTransform.COL_IMAGE_DATA][0]
+            if type(image_byte)==str:
+                image_byte = image_byte.encode()
+            image_byte = bytearray(base64.b64decode(image_byte))
+            file_bytes = np.asarray(image_byte, dtype=np.uint8)
             local_image['data'] = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             local_image['image'] = nameG
             local_image['mime'] = image_row[FaceDetectTransform.COL_IMAGE_MIME]
