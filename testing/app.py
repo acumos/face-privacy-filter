@@ -14,13 +14,16 @@ import requests
 
 from cognita_client.wrap.load import load_model
 from face_privacy_filter.transform_detect import FaceDetectTransform
+import base64
 
 def generate_image_df(path_image="", bin_stream=b""):
     # munge stream and mimetype into input sample
     if path_image and os.path.exists(path_image):
         bin_stream = open(path_image, 'rb').read()
-    return pd.DataFrame([['image/jpeg', bin_stream]],
-                        columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
+    bin_stream = base64.b64encode(bin_stream)
+    if type(bin_stream)==bytes:
+        bin_stream = bin_stream.decode()
+    return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
 def transform(mime_type, image_binary):
     app = current_app

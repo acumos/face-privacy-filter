@@ -8,6 +8,7 @@ import os
 import pandas as pd
 import numpy as np
 from sklearn.base import BaseEstimator, ClassifierMixin
+import base64
 
 class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     '''
@@ -21,7 +22,7 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     COL_REGION_IDX = 'region'
     COL_IMAGE_IDX = 'image'
     COL_IMAGE_MIME = 'mime_type'
-    COL_IMAGE_DATA = 'binary_stream'
+    COL_IMAGE_DATA = 'base64_data'
     VAL_REGION_IMAGE_ID = -1
 
     def __init__(self, cascade_path=None, include_image=True):
@@ -37,6 +38,9 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
         # munge stream and mimetype into input sample
         if path_image and os.path.exists(path_image):
             bin_stream = open(path_image, 'rb').read()
+        bin_stream = base64.b64encode(bin_stream)
+        if type(bin_stream) == bytes:
+            bin_stream = bin_stream.decode()
         return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
     @staticmethod
@@ -105,7 +109,11 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
 
         dfReturn = None
         for image_idx in range(len(X)):
-            file_bytes = np.asarray(bytearray(X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]), dtype=np.uint8)
+            image_byte = X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]
+            if type(image_byte)==str:
+                image_byte = image_byte.encode()
+            image_byte = bytearray(base64.b64decode(image_byte))
+            file_bytes = np.asarray(image_byte, dtype=np.uint8)
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             # img = cv2.imread(image_set[1])
             faces = self.detect_faces(img)
@@ -145,18 +153,5 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
         #for (x, y, w, h) in faces:
         #    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
         return faces
-
-    #############################################
-    ## helper for i/o
-    @staticmethod
-    def read_byte_arrays(bytearray_string):
-        """Method to recover bytes from pandas read/cast function:
-            inputDf = pd.read_csv(config['input'], converters:{FaceDetectTransform.COL_IMAGE_DATA:FaceDetectTransform.read_byte_arrays})
-           https://stackoverflow.com/a/43024993
-        """
-        from ast import literal_eval
-        if type(bytearray_string)==str and bytearray_string.startswith("b'"):
-            return bytearray(literal_eval(bytearray_string))
-        return bytearray_string
 
 # FaceDetectTransform.__module__ = '__main__'
