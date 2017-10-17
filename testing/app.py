@@ -33,20 +33,20 @@ def transform(mime_type, image_binary):
     print(X)
 
     if app.model_detect is not None:
-        dfPred = app.model_detect.transform.from_native(X).as_native()
+        pred_out = app.model_detect.transform.from_native(X)
     if app.model_proc is not None:
-        dfRegions = dfPred
-        dfPred = app.model_proc.transform.from_native(dfRegions).as_native()
+        pred_prior = pred_out
+        #pred_out = app.model_proc.transform.from_msg(pred_prior.as_msg())
+        pred_out = app.model_proc.transform.from_native(pred_prior.as_native())
     time_stop = time.clock()
 
-    retStr = json.dumps(dfPred.to_dict(orient='records'), indent=4)
+    retStr = json.dumps(pred_out.as_native().to_dict(orient='records'), indent=4)
 
     # formulate response
     resp = make_response((retStr, 200, { } ))
     # allow 'localhost' from 'file' or other;
     # NOTE: DO NOT USE IN PRODUCTION!!!
     resp.headers['Access-Control-Allow-Origin'] = '*'
-    print(type(dfPred))
     print(retStr[:min(200, len(retStr))])
     #print(pred)
     return resp
