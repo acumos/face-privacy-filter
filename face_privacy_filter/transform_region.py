@@ -112,7 +112,7 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             if not len(image_row[FaceDetectTransform.COL_IMAGE_DATA]):  # must have valid image data
                 print("Error: RegionTransform expected image data, but found empty binary string {:}".format(nameG))
                 continue
-            file_bytes = np.asarray(image_row[FaceDetectTransform.COL_IMAGE_DATA][0], dtype=np.uint8)
+            file_bytes = np.asarray(bytearray(FaceDetectTransform.read_byte_arrays(image_row[FaceDetectTransform.COL_IMAGE_DATA][0])), dtype=np.uint8)
             local_image['data'] = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             local_image['image'] = nameG
             local_image['mime'] = image_row[FaceDetectTransform.COL_IMAGE_MIME]
@@ -145,3 +145,4 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
                 img[x:max_x, y:max_y] = fill_color
         return img
 
+# RegionTransform.__module__ = '__main__'

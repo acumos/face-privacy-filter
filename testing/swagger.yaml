@@ -14,7 +14,6 @@ paths:
       parameters:
         - $ref: '#/parameters/mime_type'
         - $ref: '#/parameters/image_binary'
-        - $ref: '#/parameters/rich_output'
       responses:
         200:
           description: Image processed
@@ -34,11 +33,3 @@ parameters:
     in: formData
     type: file
     required: true
-  rich_output:
-    name: rich_output
-    description: Rich or regular output
-    in: formData
-    type: boolean
-    required: false
-    default: true
-

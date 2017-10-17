@@ -29,7 +29,7 @@ setup(
     install_requires=['cognita_client',
                       'numpy',
                       'sklearn',
-                      'opencv-python'
+                      'opencv-python',
                       globals_dict['MODEL_NAME']],
     tests_require=['pytest',
                    'pexpect'],
