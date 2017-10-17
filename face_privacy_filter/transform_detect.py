@@ -158,3 +158,5 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
         if type(bytearray_string)==str and bytearray_string.startswith("b'"):
             return bytearray(literal_eval(bytearray_string))
         return bytearray_string
+
+# FaceDetectTransform.__module__ = '__main__'

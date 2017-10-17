@@ -51,7 +51,7 @@ composed together for operation.
 ```
 * Dump the `pixelate` model to disk.
 ```
-./bin/run_local.sh -d model_pix -f pixelate -i image.jpg -p predict.csv
+./bin/run_local.sh -d model_pix -f pixelate
 ```
 * Evaluate the `detect` model from disk and a previously produced detect object
 ```
