@@ -222,14 +222,14 @@ function getUrlParameter(sParam) {
  */
 function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
 	var serviceURL = "";
-	var dataURL = srcCanvas.toDataURL('image/jpeg', 0.5);
+	var dataURL = srcCanvas.toDataURL('image/jpeg', 1.0);
 	var blob = dataURItoBlob(dataURL);
 	var hd = $(document.body).data('hdparams');
 	var fd = new FormData();
 
 	$(document.body).data('hdparams').imageIsWaiting = true;
     serviceURL = hd.classificationServer;
-    fd.append("image_binary", blob);
+    fd.append("base64_data", blob);
     fd.append("mime_type", "image/jpeg");
     var $dstImg = $(dstImg);
     if ($dstImg.attr('src')=='') {
