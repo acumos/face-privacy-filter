@@ -25,10 +25,10 @@ def generate_image_df(path_image="", bin_stream=b""):
         bin_stream = bin_stream.decode()
     return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
 
-def transform(mime_type, image_binary):
+def transform(mime_type, base64_data):
     app = current_app
     time_start = time.clock()
-    image_read = image_binary.stream.read()
+    image_read = base64_data.stream.read()
     X = generate_image_df(bin_stream=image_read)
     print(X)
 

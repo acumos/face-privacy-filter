@@ -13,7 +13,7 @@ paths:
       summary: Post an image for processing
       parameters:
         - $ref: '#/parameters/mime_type'
-        - $ref: '#/parameters/image_binary'
+        - $ref: '#/parameters/base64_data'
       responses:
         200:
           description: Image processed
@@ -27,8 +27,8 @@ parameters:
     required: true
     default: 'image/jpeg'
     # pattern: "^[a-zA-Z0-9-]+$"
-  image_binary:
-    name: image_binary
+  base64_data:
+    name: base64_data
     description: Binary image blob
     in: formData
     type: file
