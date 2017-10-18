@@ -1,0 +1,113 @@
+body {
+  font-size:100%;
+  font-family:Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+}
+
+#resultsDiv {
+  position: absolute;
+  top: 120px;
+  right: 50px;
+  color: #000;
+  text-align: center;
+  font-size: 20px;
+  background-color: rgba(221, 221, 221, 0.8);
+  width: 220px;
+  padding: 10px 0;
+  z-index: 2147483647;
+}
+
+hr {
+    margin: 10px 0;
+    width:100%;
+    clear: both;
+    float: none;
+}
+
+#srcVideo {
+  z-index: 1;
+}
+.videoWin {
+    //margin: -25px 0px;
+    //height: 80px;
+    // width: 120px;
+    // position: absolute;
+    // left: 15px;
+    // top: 10px;
+}
+
+
+.workingImage {
+    opacity: 0.7;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th, .header {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even){
+  background-color: #c8c8c8;
+}
+
+br {
+    float: none;
+    clear: both;
+}
+
+.tiny {
+    font-size: x-small;
+    text-transform: uppercase;
+}
+
+.mediaRibbon div {
+    float:left;
+    clear: none;
+    padding: 2px;
+    border: solid #888 3px;
+    margin: 2px;
+    width: 40%;
+    background: rgba(221, 221, 221, 0.8); // #DDD;
+}
+
+#sourceRibbon div {
+    width:15%;
+}
+
+#sourceRibbon div:hover, #sourceRibbon div.selected {
+    border: solid blue 3px;
+    background: #BBB;
+}
+
+
+.mediaRibbon div img, .mediaRibbon div canvas {
+    display: block;
+    max-width:100%;
+    max-height:300px;
+    margin-left: auto;
+    margin-right: auto;
+    width: auto;
+    height: auto;
+}
+
+
+#sourceRibbon div img, #sourceRibbon div canvas {
+    max-height:95px;
+}
+
+.mediaRibbon div span {
+    font-size: small;
+    text-align: center;
+    clear: both;
+    display: block;
+}
+

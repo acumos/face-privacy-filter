@@ -1,0 +1,72 @@
+<html>
+<!--
+face-privacy.html - Demonstrate a face privacy service
+D. Gibbon 8/1/17
+E. Zavesky 10/17/17
+Rewrite to utilize simple image-based processing steps.
+-->
+<head>
+<title>Face Privacy Processing</title>
+<link rel="stylesheet" type="text/css" href="face-privacy.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="face-privacy.js"></script>
+</head>
+<body>
+<div class="mediaRibbon">
+    <div>
+        <video class="videoWin" id="srcVideo" width="380" height="270" muted controls>
+            <source id="mp4" src="images/commercial.mp4" type="video/mp4"></source>
+            Your browser does not support the video tag. Please use Chrome.
+        </video>
+        <canvas id="srcImgCanvas" width="380" height="270" ></canvas>
+        <span>raw image</span>
+    </div>
+    <div>
+        <img id="destImg" width="380" height="270" />
+        <span>post-processed image</span>
+    </div>
+</div>
+<hr  />
+<div id="sourceRibbon" class="mediaRibbon">
+    <span class="tiny">Select an image for analysis or upload your own!</span><br />
+    <div>
+        <img src="images/face_reunion.jpg" />
+        <span><a href="https://flic.kr/p/bEgYbs" target="_new">flickr source</a></span>
+    </div>
+    <div>
+        <img src="images/commercial.jpg" movie="images/commercial.mp4" />
+        <span><a href="https://www.youtube.com/watch?v=34KfCNapnUg" target="_new">youtube source</a></span>
+    </div>
+    <div>
+        <img src="images/face_DiCaprio.jpg" />
+        <span><a href="https://en.wikipedia.org/wiki/Celebrity#/media/File:Leonardo_DiCaprio_visited_Goddard_Saturday_to_discuss_Earth_science_with_Piers_Sellers_(26105091624)_cropped.jpg" target="_new">wikipedia source</a></span>
+    </div>
+    <div>
+        <img src="images/face_Schwarzenegger.jpg" />
+        <span><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg" target="_new">wikimedia source</a></span>
+    </div>
+    <div>
+        <label>Custom Upload</label><br/>
+        <input type="file" id="imageLoader" name="imageLoader"/>
+    </div>
+</div>
+    <br />
+    <span class="tiny"><em>Note: These sample images are copyright of their original authors and are provided
+        only for testing and demonstration purposes, and are not authorized for sale or redistribution
+        outside of this context.</em>
+    </span>
+
+<hr  />
+<form action="javascript:void(0);">
+    <label for="serverUrl">Transform URL:</label><input type="text" name="serverUrl" id="serverUrl" size="60" />
+    <br /><span class="tiny"><strong>PRO TIP:</strong>Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span>
+</form>
+<hr  />
+<div>
+    Face privacy processing using <em>detected faces</em> and a subsequent processinf operation.
+<br/>
+<br/>
+<a href='http://www.research.att.com/projects/Video/'>Video and Multimedia Technologies Research</a>
+</div>
+</body>
+</html>
