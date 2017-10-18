@@ -81,6 +81,7 @@ and visualize the results of image classification.
 * [DiCaprio celebrity face sample](web_demo/images/face_DiCaprio.jpg) ([wikimedia source](https://en.wikipedia.org/wiki/Celebrity#/media/File:Leonardo_DiCaprio_visited_Goddard_Saturday_to_discuss_Earth_science_with_Piers_Sellers_(26105091624)_cropped.jpg))
 * [Schwarzenegger celebrity face sample](web_demo/images/face_Schwarzenegger.jpg) ([wikimedia source](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg))
 * [Commercial example](web_demo/images/commercial.jpg) ([youtube source](https://www.youtube.com/watch?v=34KfCNapnUg))
+* [Reunion face sample](web_demo/images/face_reunion.jpg) ([flickr source](https://flic.kr/p/bEgYbs))
 
 
 before  | after
