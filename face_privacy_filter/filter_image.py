@@ -50,15 +50,16 @@ def main(config={}):
         pipeline, EXTRA_DEPS = model_create_pipeline(transform, "detect")
 
         # formulate the pipeline to be used
+        model_name = MODEL_NAME+"_"+config['function']
         if 'push_address' in config and config['push_address']:
             from cognita_client.push import push_sklearn_model # push_skkeras_hybrid_model (keras?)
             print("Pushing new model to '{:}'...".format(config['push_address']))
-            push_sklearn_model(pipeline, inputDf, api=config['push_address'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
+            push_sklearn_model(pipeline, inputDf, api=config['push_address'], name=model_name, extra_deps=EXTRA_DEPS)
 
         if 'dump_model' in config and config['dump_model']:
             from cognita_client.wrap.dump import dump_sklearn_model # dump_skkeras_hybrid_model (keras?)
             print("Dumping new model to '{:}'...".format(config['dump_model']))
-            dump_sklearn_model(pipeline, inputDf, config['dump_model'], name=MODEL_NAME, extra_deps=EXTRA_DEPS)
+            dump_sklearn_model(pipeline, inputDf, config['dump_model'], name=model_name, extra_deps=EXTRA_DEPS)
 
     else:
         if not config['dump_model'] or not os.path.exists(config['dump_model']):

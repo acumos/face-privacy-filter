@@ -78,13 +78,14 @@ launched locally.  Afterwards, the sample application found in
 [web_demo](web_demo) uses a `localhost` service to classify
 and visualize the results of image classification.
 
-* [DiCaprio celebrity face sample](web_demo/images/face_DiCaprio.jpg) ([wikimedia source](https://en.wikipedia.org/wiki/Celebrity#/media/File:Leonardo_DiCaprio_visited_Goddard_Saturday_to_discuss_Earth_science_with_Piers_Sellers_(26105091624)_cropped.jpg))
-* [Schwarzenegger celebrity face sample](web_demo/images/face_Schwarzenegger.jpg) ([wikimedia source](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg))
 * [Commercial example](web_demo/images/commercial.jpg) ([youtube source](https://www.youtube.com/watch?v=34KfCNapnUg))
 * [Reunion face sample](web_demo/images/face_reunion.jpg) ([flickr source](https://flic.kr/p/bEgYbs))
+* [family face example](web_demo/images/face_family.jpg) ([pexel source](https://www.pexels.com/photo/adult-affection-beautiful-beauty-265764/))
+* [DiCaprio celebrity face sample](web_demo/images/face_DiCaprio.jpg) ([wikimedia source](https://en.wikipedia.org/wiki/Celebrity#/media/File:Leonardo_DiCaprio_visited_Goddard_Saturday_to_discuss_Earth_science_with_Piers_Sellers_(26105091624)_cropped.jpg))
+* [Schwarzenegger celebrity face sample](web_demo/images/face_Schwarzenegger.jpg) ([wikimedia source](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg))
 
 
 before  | after
 ------- | -------
 ![raw commercial](web_demo/images/commercial.jpg)  | ![pixelated commercial](web_demo/images/commercial_pixelate.jpg)
-![raw face](web_demo/images/face_DiCaprio.jpg)  | ![pixelated commercial](web_demo/images/face_DiCaprio_pixelate.jpg)
+![raw face](web_demo/images/face_family.jpg)  | ![pixelated commercial](web_demo/images/face_family_pixelate.jpg)
