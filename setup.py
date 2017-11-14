@@ -11,22 +11,22 @@ with open(os.path.join(setup_dir, 'face_privacy_filter', '_version.py')) as file
 
 
 setup(
-    name = globals_dict['MODEL_NAME'],
-    version = __version__,
-    packages = find_packages(),
-    author = "Eric Zavesky",
-    author_email = "ezavesky@research.att.com",
-    description = ("Face detection and privacy filtering models"),
-    long_description = ("Face detection and privacy filtering models"),
-    license = "Apache",
-    package_data={globals_dict['MODEL_NAME']:['data/*']},
+    name=globals_dict['MODEL_NAME'],
+    version=__version__,
+    packages=find_packages(),
+    author="Eric Zavesky",
+    author_email="ezavesky@research.att.com",
+    description=("Face detection and privacy filtering models"),
+    long_description=("Face detection and privacy filtering models"),
+    license="Apache",
+    package_data={globals_dict['MODEL_NAME']: ['data/*']},
     scripts=['bin/run_face-privacy-filter_reference.py'],
     setup_requires=['pytest-runner'],
     entry_points="""
     [console_scripts]
     """,
-    #setup_requires=['pytest-runner'],
-    install_requires=['cognita_client',
+    # setup_requires=['pytest-runner'],
+    install_requires=['acumos',
                       'numpy',
                       'sklearn',
                       'opencv-python',
@@ -34,4 +34,4 @@ setup(
     tests_require=['pytest',
                    'pexpect'],
     include_package_data=True,
-    )
+)
