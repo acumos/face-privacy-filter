@@ -7,23 +7,24 @@ import json
 import time
 import os
 
-from flask import Flask, request, current_app, make_response
+from flask import current_app, make_response
 
 import pandas as pd
-import requests
 
-from cognita_client.wrap.load import load_model
+from acumos.wrapped import load_model
 from face_privacy_filter.transform_detect import FaceDetectTransform
 import base64
+
 
 def generate_image_df(path_image="", bin_stream=b""):
     # munge stream and mimetype into input sample
     if path_image and os.path.exists(path_image):
         bin_stream = open(path_image, 'rb').read()
     bin_stream = base64.b64encode(bin_stream)
-    if type(bin_stream)==bytes:
+    if type(bin_stream) == bytes:
         bin_stream = bin_stream.decode()
     return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
+
 
 def transform(mime_type, base64_data):
     app = current_app
