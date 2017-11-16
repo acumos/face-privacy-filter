@@ -10,9 +10,9 @@ import os
 from flask import current_app, make_response
 
 import pandas as pd
+import numpy as np
 
 from acumos.wrapped import load_model
-from face_privacy_filter.transform_detect import FaceDetectTransform
 import base64
 
 
@@ -20,36 +20,39 @@ def generate_image_df(path_image="", bin_stream=b""):
     # munge stream and mimetype into input sample
     if path_image and os.path.exists(path_image):
         bin_stream = open(path_image, 'rb').read()
-    bin_stream = base64.b64encode(bin_stream)
-    if type(bin_stream) == bytes:
-        bin_stream = bin_stream.decode()
-    return pd.DataFrame([['image/jpeg', bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
+    # bin_stream = base64.b64encode(bin_stream)
+    # if type(bin_stream) == bytes:
+    #     bin_stream = bin_stream.decode()
+    return pd.DataFrame([['image/jpeg', bin_stream]], columns=["mime_type", "image_binary"])
 
 
-def transform(mime_type, base64_data):
+def transform(mime_type, image_binary):
     app = current_app
     time_start = time.clock()
-    image_read = base64_data.stream.read()
+    image_read = image_binary.stream.read()
     X = generate_image_df(bin_stream=image_read)
-    print(X)
 
-    if app.model_detect is not None:
-        pred_out = app.model_detect.transform.from_native(X)
-    if app.model_proc is not None:
-        pred_prior = pred_out
-        #pred_out = app.model_proc.transform.from_msg(pred_prior.as_msg())
-        pred_out = app.model_proc.transform.from_native(pred_prior.as_native())
-    time_stop = time.clock()
+    pred_out = None
+    if app.model_detect is not None:    # first translate to input type
+        type_in = app.model_detect.transform._input_type
+        detect_in = type_in(*tuple(col for col in X.values.T))
+        pred_out = app.model_detect.transform.from_wrapped(detect_in)
+    if app.model_proc is not None and pred_out is not None:  # then transform to output type
+        pred_out = app.model_proc.transform.from_msg(pred_out.as_msg())
+    time_stop = time.clock()-time_start
 
-    retStr = json.dumps(pred_out.as_native().to_dict(orient='records'), indent=4)
+    pred = None
+    if pred_out is not None:
+        pred = pd.DataFrame(np.column_stack(pred_out), columns=pred_out._fields)
+    retStr = json.dumps(pred.to_dict(orient='records'), indent=4)
 
     # formulate response
-    resp = make_response((retStr, 200, { } ))
+    resp = make_response((retStr, 200, {}))
     # allow 'localhost' from 'file' or other;
     # NOTE: DO NOT USE IN PRODUCTION!!!
     resp.headers['Access-Control-Allow-Origin'] = '*'
     print(retStr[:min(200, len(retStr))])
-    #print(pred)
+    # print(pred)
     return resp
 
 

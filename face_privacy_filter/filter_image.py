@@ -16,23 +16,33 @@ from face_privacy_filter._version import MODEL_NAME
 
 
 def model_create_pipeline(transformer):
-    from acumos.modeling import Model
     from acumos.session import Requirements
+    from acumos.modeling import Model, List, create_namedtuple
     import sklearn
     import cv2
     from os import path
 
-    type_in = transformer._acumos_type_in
-    type_out = transformer._acumos_type_out
+    # derive the input type from the transformer
+    type_list, type_name = transformer._type_in  # it looked like this {'test': int, 'tag': str}
+    input_type = [(k, List[type_list[k]]) for k in type_list]
+    type_in = create_namedtuple(type_name, input_type)
 
-    def predict_class(df: type_in) -> type_out:
+    # derive the output type from the transformer
+    type_list, type_name = transformer._type_out
+    output_type = [(k, List[type_list[k]]) for k in type_list]
+    type_out = create_namedtuple(type_name, output_type)
+
+    def predict_class(value: type_in) -> type_out:
         '''Returns an array of float predictions'''
-        return transformer.predict(df)
+        df = pd.DataFrame(np.column_stack(value), columns=value._fields)
+        tags_df = transformer.predict(df)
+        tags_list = type_out(*(col for col in tags_df.values.T))  # flatten to tag set
+        return tags_list
 
     # compute path of this package to add it as a dependency
     package_path = path.dirname(path.realpath(__file__))
-    return Model(classify=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn],
-                                                       req_map={cv2: 'opencv-python'})
+    return Model(transform=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn],
+                                                        req_map={cv2: 'opencv-python'})
 
 
 def main(config={}):
@@ -92,8 +102,16 @@ def main(config={}):
             inputDf = FaceDetectTransform.generate_in_df(config['input'])
         else:
             inputDf = pd.read_csv(config['input'], converters={FaceDetectTransform.COL_IMAGE_DATA: FaceDetectTransform.read_byte_arrays})
-        dfPred = model.transform.from_native(inputDf).as_wrapped()
-        dfPred = dfPred[0]
+
+        type_in = model.transform._input_type
+        transform_in = type_in(*tuple(col for col in inputDf.values.T))
+        transform_out = model.transform.from_wrapped(transform_in).as_wrapped()
+        dfPred = pd.DataFrame(np.column_stack(transform_out), columns=transform_out._fields)
+
+        if not config['csv_input']:
+            dfPred = FaceDetectTransform.suppress_image(dfPred)
+        print("ALMOST DONE")
+        print(dfPred)
 
         if config['predict_path']:
             print("Writing prediction to file '{:}'...".format(config['predict_path']))
@@ -101,8 +119,6 @@ def main(config={}):
                 dfPred.to_csv(config['predict_path'], sep=",", index=False)
             else:
                 FaceDetectTransform.generate_out_image(dfPred, config['predict_path'])
-        if not config['csv_input']:
-            dfPred = FaceDetectTransform.suppress_image(dfPred)
 
         if dfPred is not None:
             print("Predictions:\n{:}".format(dfPred))

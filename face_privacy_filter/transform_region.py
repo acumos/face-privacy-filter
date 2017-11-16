@@ -41,26 +41,15 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
         return FaceDetectTransform.generate_out_dict(idx=idx, x=x, y=y, h=h, w=w, image=image, bin_stream=bin_stream, media=media)
 
     @property
-    def _acumos_type_in(self):
+    def _type_in(self):
         """Custom input type for this processing transformer"""
-        from acumos.modeling import List, create_namedtuple
-        # base input for detect is image itself
         input_dict = RegionTransform.generate_in_dict()
-        tuple_types = [(k, type(input_dict[k])) for k in input_dict]
-        # base output for detect is several parts
-        DetectionRow = create_namedtuple('DetectionRow', tuple_types)
-        # represents a collection of flattened detect arrays
-        return List[DetectionRow]
+        return {k: type(input_dict[k]) for k in input_dict}, "DetectionFrames"
 
     @property
-    def _acumos_type_out(self):
+    def _type_out(self):
         """Custom input type for this processing transformer"""
-        from acumos.modeling import List, create_namedtuple
-        # base input for detect is image itself
-        ImageRow = create_namedtuple('ImageRow', [(FaceDetectTransform.COL_IMAGE_MIME, str),
-                                                  (FaceDetectTransform.COL_IMAGE_DATA, bytes)])
-        # represents a collection of flattened image arrays
-        return List[ImageRow]
+        return {FaceDetectTransform.COL_IMAGE_MIME: str, FaceDetectTransform.COL_IMAGE_DATA: bytes}, "TransformedImage"
 
     def score(self, X, y=None):
         return 0

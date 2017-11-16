@@ -56,35 +56,21 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
 
     @staticmethod
     def suppress_image(df):
-        keep_col = [FaceDetectTransform.COL_FACE_X, FaceDetectTransform.COL_FACE_Y,
-                    FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
-                    FaceDetectTransform.COL_FACE_W, FaceDetectTransform.COL_FACE_H,
-                    FaceDetectTransform.COL_REGION_IDX, FaceDetectTransform.COL_IMAGE_IDX]
-        blank_cols = [col for col in df.columns if col not in keep_col]
+        blank_cols = [FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA]
         # set columns that aren't in our known column list to empty strings; search where face index==-1 (no face)
-        df.loc[df[FaceDetectTransform.COL_REGION_IDX] == FaceDetectTransform.VAL_REGION_IMAGE_ID, blank_cols] = ""
+        df[blank_cols] = None
         return df
 
     @property
-    def _acumos_type_in(self):
+    def _type_in(self):
         """Custom input type for this processing transformer"""
-        from acumos.modeling import List, create_namedtuple
-        # base input for detect is image itself
-        ImageRow = create_namedtuple('ImageRow', [(FaceDetectTransform.COL_IMAGE_MIME, str),
-                                                  (FaceDetectTransform.COL_IMAGE_DATA, bytes)])
-        # represents a collection of flattened image arrays
-        return List[ImageRow]
+        return {FaceDetectTransform.COL_IMAGE_MIME: str, FaceDetectTransform.COL_IMAGE_DATA: bytes}, "FaceImage"
 
     @property
-    def _acumos_type_out(self):
+    def _type_out(self):
         """Custom input type for this processing transformer"""
-        from acumos.modeling import List, create_namedtuple
         output_dict = FaceDetectTransform.generate_out_dict()
-        tuple_types = [(k, type(output_dict[k])) for k in output_dict]
-        # base output for detect is several parts
-        DetectionRow = create_namedtuple('DetectionRow', tuple_types)
-        # represents a collection of flattened image arrays
-        return List[DetectionRow]
+        return {k: type(output_dict[k]) for k in output_dict}, "DetectionFrames"
 
     def score(self, X, y=None):
         return 0
@@ -111,7 +97,8 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
             image_byte = X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]
             if type(image_byte) == str:
                 image_byte = image_byte.encode()
-            image_byte = bytearray(base64.b64decode(image_byte))
+                image_byte = base64.b64decode(image_byte)
+            image_byte = bytearray(image_byte)
             file_bytes = np.asarray(image_byte, dtype=np.uint8)
             img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             # img = cv2.imread(image_set[1])
@@ -129,7 +116,7 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
                                                                                    face_rect[2], face_rect[3], image=image_idx)]),
                                ignore_index=True)
             if dfReturn is None:  # create an NP container for all image samples + features
-                dfReturn = df.reindex_axis(self.output_names_, axis=1)
+                dfReturn = df   # df.reindex_axis(self.output_names_, axis=1)
             else:
                 dfReturn = dfReturn.append(df, ignore_index=True)
             # print("IMAGE {:} found {:} total rows".format(image_idx, len(df)))
