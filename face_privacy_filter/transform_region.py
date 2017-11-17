@@ -29,8 +29,12 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
         return {'transform_mode': self.transform_mode}
 
     @staticmethod
-    def generate_out_df(media_type="", bin_stream=b""):
-        return pd.DataFrame([[media_type, bin_stream]], columns=[FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA])
+    def output_names_():
+        return [FaceDetectTransform.COL_IMAGE_MIME, FaceDetectTransform.COL_IMAGE_DATA]
+
+    @staticmethod
+    def generate_out_dict(bin_stream=b"", media=""):
+        return {FaceDetectTransform.COL_IMAGE_MIME: media, FaceDetectTransform.COL_IMAGE_DATA: bin_stream}
 
     @staticmethod
     def generate_in_df(idx=FaceDetectTransform.VAL_REGION_IMAGE_ID, x=0, y=0, w=0, h=0, image=0, bin_stream=b"", media=""):
@@ -68,10 +72,9 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
         #   collect all remaining regions, operate with each on input image
         #   generate output image, send to output
 
-        dfReturn = None
         image_region_list = RegionTransform.transform_raw_sample(X)
+        listData = []
         for image_data in image_region_list:
-            # print(image_data)
             img = image_data['data']
             for r in image_data['regions']:  # loop through regions
                 x_max = min(r[0] + r[2], img.shape[1])
@@ -84,13 +87,9 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             img_binary = cv2.imencode(".jpg", img)[1].tostring()
             img_mime = 'image/jpeg'  # image_data['mime']
 
-            df = RegionTransform.generate_out_df(media_type=img_mime, bin_stream=img_binary)
-            if dfReturn is None:  # create an NP container for all images
-                dfReturn = df.reindex_axis(self.output_names_, axis=1)
-            else:
-                dfReturn = dfReturn.append(df, ignore_index=True)
-            print("IMAGE {:} found {:} total rows".format(image_data['image'], len(df)))
-        return dfReturn
+            listData.append(RegionTransform.generate_out_dict(media=img_mime, bin_stream=img_binary))
+            print("IMAGE {:} found {:} total rows".format(image_data['image'], len(image_data['regions'])))
+        return pd.DataFrame(listData, columns=RegionTransform.output_names_())
 
     @staticmethod
     def transform_raw_sample(raw_sample):
@@ -111,7 +110,9 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             image_byte = image_row[FaceDetectTransform.COL_IMAGE_DATA][0]
             if type(image_byte) == str:
                 image_byte = image_byte.encode()
-            image_byte = bytearray(base64.b64decode(image_byte))
+                image_byte = bytearray(base64.b64decode(image_byte))
+            else:
+                image_byte = bytearray(image_byte)
             file_bytes = np.asarray(image_byte, dtype=np.uint8)
             local_image['data'] = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
             local_image['image'] = nameG
