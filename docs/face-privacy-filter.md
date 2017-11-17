@@ -64,6 +64,32 @@ composed together for operation.
 
 
 
+### Installation Troubleshoting
+Using some environment-based versions of python (e.g. conda),
+one problem seemed to come up with the installation of the dependent
+package `opencv-python`.  If you launch your python instance and see
+an error like the one below, keep reading.
+
+```
+>>> import cv2
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: dynamic module does not define module export function (PyInit_cv2)
+>>>
+```
+
+This is likely because your `PYTHONPATH` is not correctly configured to
+point to the additional installed libraries.
+
+* From the [simple example here](https://stackoverflow.com/a/42160595)
+you can check your environment with `echo $PYTHONPATH`.  If it does not
+contain the directory that you installed to, then you have a problem.
+* Please check your installation by running `python -v -v; import cv2` and checking
+that the last loaded library is in the right location.
+* In some instances, this variable needed to be blank to work properly (i.e.
+`export PYTHONPATH=`) run at some time during start up.
+
+
 ## Face-based Use Cases
 This project includes a number of face-based use cases including raw
 detection, blurring, and other image-based modifications based on
@@ -74,7 +100,7 @@ incoming images and outputs detected faces.
 
 ## Example Interface
 An instance should first be built and downloaded and then
-launched locally.  Afterwards, the sample application found in 
+launched locally.  Afterwards, the sample application found in
 [web_demo](web_demo) uses a `localhost` service to classify
 and visualize the results of image classification.
 
