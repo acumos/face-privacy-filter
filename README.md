@@ -47,19 +47,19 @@ composed together for operation.
 
 * Dump the `detect` model to disk.
 ```
-./bin/run_local.sh -d model_detect -f detect
+python face_privacy_filter/filter_image.py -d model_detect -f detect
 ```
 * Dump the `pixelate` model to disk.
 ```
-./bin/run_local.sh -d model_pix -f pixelate
+python face_privacy_filter/filter_image.py -d model_pix -f pixelate
 ```
 * Evaluate the `detect` model from disk and a previously produced detect object
 ```
-./bin/run_local.sh -d model_detect -p output.csv -i web_demo/images/face_DiCaprio.jpg
+python face_privacy_filter/filter_image.py -d model_detect -p output.csv -i web_demo/images/face_DiCaprio.jpg
 ```
 * Example for evaluating the `pixelate` model from disk and a previously produced detect object
 ```
-./bin/run_local.sh -d model_pix -i detect.csv -p output.jpg --csv_input
+python face_privacy_filter/filter_image.py -d model_pix -i detect.csv -p output.jpg --csv_input
 ```
 
 ### Installation Troubleshoting

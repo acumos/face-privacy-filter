@@ -19,8 +19,7 @@ setup(
     description=("Face detection and privacy filtering models"),
     long_description=("Face detection and privacy filtering models"),
     license="Apache",
-    package_data={globals_dict['MODEL_NAME']: ['data/*']},
-    scripts=['bin/run_face-privacy-filter_reference.py'],
+    #package_data={globals_dict['MODEL_NAME']: ['data/*']},
     setup_requires=['pytest-runner'],
     entry_points="""
     [console_scripts]

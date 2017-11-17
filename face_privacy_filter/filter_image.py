@@ -10,10 +10,6 @@ import sys
 import numpy as np
 import pandas as pd
 
-from face_privacy_filter.transform_detect import FaceDetectTransform
-from face_privacy_filter.transform_region import RegionTransform
-from face_privacy_filter._version import MODEL_NAME
-
 
 def model_create_pipeline(transformer):
     from acumos.session import Requirements
@@ -47,6 +43,9 @@ def model_create_pipeline(transformer):
 
 
 def main(config={}):
+    from face_privacy_filter.transform_detect import FaceDetectTransform
+    from face_privacy_filter.transform_region import RegionTransform
+    from face_privacy_filter._version import MODEL_NAME
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-p', '--predict_path', type=str, default='', help="save detections from model (model must be provided via 'dump_model')")
@@ -73,13 +72,13 @@ def main(config={}):
 
         # formulate the pipeline to be used
         model_name = MODEL_NAME + "_" + config['function']
-        if 'push_address' in config and config['push_address']:
+        if config['push_address']:
             from acumos.session import AcumosSession
             print("Pushing new model to '{:}'...".format(config['push_address']))
             session = AcumosSession(push_api=config['push_address'], auth_api=config['auth_address'])
             session.push(pipeline, model_name, reqs)  # creates ./my-iris.zip
 
-        if 'dump_model' in config and config['dump_model']:
+        if config['dump_model']:
             from acumos.session import AcumosSession
             from os import makedirs
             if not os.path.exists(config['dump_model']):
@@ -126,4 +125,8 @@ def main(config={}):
 
 
 if __name__ == '__main__':
+    # patch the path to include this object
+    pathRoot = os.path.dirname(os.path.basename(os.path.abspath(__file__)))
+    if pathRoot not in sys.path:
+        sys.path.append(pathRoot)
     main()
