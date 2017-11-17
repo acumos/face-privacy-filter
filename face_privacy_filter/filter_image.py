@@ -1,7 +1,7 @@
 #! python
 # -*- coding: utf-8 -*-
 """
-Wrapper for image emotion classification task
+Wrapper for face privacy transform task
 """
 
 import os.path
