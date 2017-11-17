@@ -32,9 +32,10 @@ def model_create_pipeline(transformer):
     output_type = [(k, List[type_list[k]]) for k in type_list]
     type_out = create_namedtuple(type_name, output_type)
 
-    def predict_class(value: type_in) -> type_out:
+    def predict_class(val_wrapped: type_in) -> type_out:
         '''Returns an array of float predictions'''
-        df = pd.DataFrame(np.column_stack(value), columns=value._fields)
+        df = pd.DataFrame(list(zip(*val_wrapped)), columns=val_wrapped._fields)
+        # df = pd.DataFrame(np.column_stack(val_wrapped), columns=val_wrapped._fields)  # numpy doesn't like binary
         tags_df = transformer.predict(df)
         tags_list = type_out(*(col for col in tags_df.values.T))  # flatten to tag set
         return tags_list
@@ -106,7 +107,7 @@ def main(config={}):
         type_in = model.transform._input_type
         transform_in = type_in(*tuple(col for col in inputDf.values.T))
         transform_out = model.transform.from_wrapped(transform_in).as_wrapped()
-        dfPred = pd.DataFrame(np.column_stack(transform_out), columns=transform_out._fields)
+        dfPred = pd.DataFrame(list(zip(*transform_out)), columns=transform_out._fields)
 
         if not config['csv_input']:
             dfPred = FaceDetectTransform.suppress_image(dfPred)

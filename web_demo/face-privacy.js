@@ -230,7 +230,7 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
 
 	$(document.body).data('hdparams').imageIsWaiting = true;
     serviceURL = hd.classificationServer;
-    fd.append("base64_data", blob);
+    fd.append("image_binary", blob);
     fd.append("mime_type", "image/jpeg");
     var $dstImg = $(dstImg);
     if ($dstImg.attr('src')=='') {
@@ -246,7 +246,7 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
 		    var responseJson = $.parseJSON(request.responseText);
 		    var respImage = responseJson[0];
 		    // https://stackoverflow.com/questions/21227078/convert-base64-to-image-in-javascript-jquery
-            $dstImg.attr('src', "data:"+respImage['mime_type']+";base64,"+respImage['base64_data']).removeClass('workingImage');
+            $dstImg.attr('src', "data:"+respImage['mime_type']+";base64,"+respImage['image_binary']).removeClass('workingImage');
 			//genClassTable($.parseJSON(request.responseText), dstDiv);
 			hd.imageIsWaiting = false;
 		}

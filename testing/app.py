@@ -38,12 +38,13 @@ def transform(mime_type, image_binary):
         detect_in = type_in(*tuple(col for col in X.values.T))
         pred_out = app.model_detect.transform.from_wrapped(detect_in)
     if app.model_proc is not None and pred_out is not None:  # then transform to output type
-        pred_out = app.model_proc.transform.from_msg(pred_out.as_msg())
+        pred_out = app.model_proc.transform.from_pb_msg(pred_out.as_pb_msg()).as_wrapped()
     time_stop = time.clock()-time_start
 
     pred = None
     if pred_out is not None:
-        pred = pd.DataFrame(np.column_stack(pred_out), columns=pred_out._fields)
+        pred = pd.DataFrame(list(zip(*pred_out)), columns=pred_out._fields)
+        pred['image_binary'] = pred['image_binary'].apply(lambda x: base64.b64encode(x).decode())
     retStr = json.dumps(pred.to_dict(orient='records'), indent=4)
 
     # formulate response
