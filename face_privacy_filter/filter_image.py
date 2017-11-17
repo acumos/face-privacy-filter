@@ -126,7 +126,7 @@ def main(config={}):
 
 if __name__ == '__main__':
     # patch the path to include this object
-    pathRoot = os.path.dirname(os.path.basename(os.path.abspath(__file__)))
+    pathRoot = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     if pathRoot not in sys.path:
         sys.path.append(pathRoot)
     main()
