@@ -6,7 +6,7 @@
 
 ### 0.2.1
 * Refactor to remote the demo `bin` scripts and rewire for direct call of the
-  script `classify_image.py` as the primary interaction mechanism.
+  script `filter_image.py` as the primary interaction mechanism.
 
 ### 0.2.0
 * Refactor for compliant dataframe usage following primary client library
