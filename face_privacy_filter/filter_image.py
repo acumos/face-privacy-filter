@@ -54,6 +54,7 @@ def main(config={}):
     parser.add_argument('-s', '--suppress_image', dest='suppress_image', action='store_true', default=False, help='do not create an extra row for a returned image')
     parser.add_argument('-f', '--function', type=str, default='detect', help='which type of model to generate', choices=['detect', 'pixelate'])
     parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default='')
+    parser.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/v2/auth)', default='')
     parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     # pargs, unparsed = parser.parse_known_args()
 
