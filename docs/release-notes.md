@@ -1,5 +1,9 @@
 # Release Notes
 ## 0.2
+### 0.2.3
+* Documentation and package update to use install instructions instead of installing
+  this package directly into a user's environment.
+
 ### 0.2.2
 * Refactor documentation into sections and tutorials.
 * Create this release notes document for better version understanding.
