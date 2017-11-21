@@ -3,6 +3,7 @@
 ### 0.2.3
 * Documentation and package update to use install instructions instead of installing
   this package directly into a user's environment.
+* License addition 
 
 ### 0.2.2
 * Refactor documentation into sections and tutorials.
