@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f7f86ae_29e6597b",
+        "filename": "docs/index.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-23T14:10:52Z",
+      "side": 1,
+      "message": "Sphinx-build fails on this directory.",
+      "revId": "0738a83af90d98a5b4feaa868b51e7bf56221d95",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e5d0f9db_44b6ddaf",
+        "filename": "face_privacy_filter/__init__.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-23T14:10:52Z",
+      "side": 1,
+      "message": "Why add an empty file?  I expect the legal beagles may insist on having a license header.",
+      "revId": "0738a83af90d98a5b4feaa868b51e7bf56221d95",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1d857fd_35ba0b95",
+        "filename": "web_demo/jquery.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2017-11-23T14:10:52Z",
+      "side": 1,
+      "message": "What is the license on jQuery?  As long as it\u0027s Apache 2.0 or other compatible license we\u0027ll be fine.",
+      "revId": "0738a83af90d98a5b4feaa868b51e7bf56221d95",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
