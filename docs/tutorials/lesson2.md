@@ -106,3 +106,11 @@ images from javascript can be [found on StackOverflow](https://stackoverflow.com
 ```
 curl -F base64_data=@../web_demo/images/face_renion.jpg -F mime_type="image/jpeg" "http://localhost:8884/transform"
 ```
+
+## Sample Inages
+Sample images are provided in the `testing` directory and were originally sourced
+from the URLs below.
+
+* [multi-face_pexels.jpg](https://www.pexels.com/photo/family-generation-father-mother-8509/)
+* [single-face_pexels.jpg](https://www.pexels.com/photo/adult-beard-boy-casual-220453/)
+

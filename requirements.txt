@@ -3,11 +3,8 @@
 # core deployment packages
 acumos
 numpy
+scipy
 sklearn
 pandas
 opencv-python
 
-# testing packages
-# pytest
-# pexpect
-connexion
