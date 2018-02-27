@@ -1,4 +1,6 @@
-# requirements for deployment AND testing
+# testing packages
+connexion
+pytest
 
 # core deployment packages
 acumos
