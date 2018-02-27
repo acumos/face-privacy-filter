@@ -150,7 +150,6 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
            where mime_type is an image-specifying mime type and binary_string is the raw image bytes
         """
         self.load_cascade()  # JIT load model
-        dfReturn = None
         listData = []
         for image_idx in range(len(X)):
             image_byte = X[FaceDetectTransform.COL_IMAGE_DATA][image_idx]
