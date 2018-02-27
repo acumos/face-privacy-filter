@@ -1,0 +1,11 @@
+# testing packages
+connexion
+pytest
+
+# core deployment packages
+numpy
+sklearn
+pandas
+opencv-python
+# acumos -- disabled until exposed as public library
+
