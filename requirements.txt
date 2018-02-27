@@ -7,7 +7,3 @@ sklearn
 pandas
 opencv-python
 
-# testing packages
-# pytest
-# pexpect
-connexion
