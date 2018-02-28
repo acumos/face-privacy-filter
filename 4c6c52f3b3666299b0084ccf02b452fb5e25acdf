@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "40b3e51b_2a5fffe1",
+        "filename": ".gitattributes",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-02-28T19:48:37Z",
+      "side": 1,
+      "message": "You don\u0027t want this.  You want text\u003dauto",
+      "revId": "4c6c52f3b3666299b0084ccf02b452fb5e25acdf",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
