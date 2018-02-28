@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea93ee43_126428aa",
+        "filename": "web_demo/face-privacy.html",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 10
+      },
+      "writtenOn": "2018-02-28T16:33:54Z",
+      "side": 1,
+      "message": "Hi Bryan, it looks like this HTML and the JS lost your license revisions.",
+      "revId": "4f4198f33b73d2509db032193eb31f0d6cc451c2",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
