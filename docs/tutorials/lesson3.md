@@ -12,23 +12,62 @@ CORS or other cross-domain objections to dropping the file `face-privacy.html`
 into the browser and accesing a locally hosted server API, as configured
 in [the previous tutorial](lesson2.md).
 
-## Example mood classification demo
+If you want to run the test locally, you can use the built-in python
+webserver with the line below while working in the `web_demo` directory.
+```
+python -m http.server 5000
+```
+
+Afterwards, just point your browser at `http://localhost:5000/face-privacy.html`.
+
+## Example mood classification demo (docker and protobuf)
+To customize this demo, one should change either the included javascript
+or simply update the primary classification URL on the page itself during runtime.
+This demo utilizes the [javascript protobuf library](https://github.com/dcodeIO/ProtoBuf.js/)
+to encode parameters into proto binaries in the browser.
+
+** NOTE ** One version of the face model's protobuf schema is included with
+this web page, but it may change over time.  If you receive encoding errors
+or unexpected results, please verify that your target model and this web page
+are using the same `.proto` file.
+
+* confirm that your target docker instance is configured and running
+* download this directory to your local machine
+    * confirm the host port and classification service URL in the file `face-privacy.js`
+    * modify the `protoDefault` setting to be 1
+```
+urlDefault: "http://localhost:8884/transform",
+```
+* view the page `face-privacy.html` in a Crome or Firefox browser
+* you can switch between a few sample images or upload your own by clicking on the buttons below the main image window
+
+Example web application with blur process.
+
+* ![example web application blurring multiple faces](example_running.jpg "Example multi-face blur")
+
+### Special decoding example
+In `protobuf` mode, you can also download a binary, encoded version of the last
+image that was sent to the remote service.  When available, the <strong>Download Encoded Message</strong>
+button will be enabled and a binary file will be generated in the browser.
+
+```
+protoc --decode=sapLzHrujUMPBGCBEMWQFxEIMsxocFrG.FaceImage model.proto < protobuf.bin
+```
+
+
+## Example mood classification demo (HTTP parameters)
 To customize this demo, one should change either the included javascript
 or simply update the primary classification URL on the page itself during runtime.
 
 * confirm that your local instance is configured and running
 * download this directory to your local machine
     * confirm the host port and classification service URL in the file `face-privacy.js`
+    * modify the `protoDefault` setting to be 0
 ```
-classificationServer: "http://localhost:8884/transform",
+urlDefault: "http://localhost:8884/transform",
 ```
 * view the page `face-privacy.html` in a Crome or Firefox browser
-* probabilities will be updated on the right side fo the screen
 * you can switch between a few sample images or upload your own by clicking on the buttons below the main image window
-
-Example web application with *awe* mood classification
-
-* ![example web application blurring multiple facs](example_running.jpg "Example multi-face blur")
 
 
 # Example Interface

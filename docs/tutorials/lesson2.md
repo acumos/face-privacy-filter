@@ -97,6 +97,22 @@ mime type.
 
 ```
 
+### Direct use of the model-runner
+
+Another testing mode is to simualate the output of an Acumos model runner.
+This model runner can be locally duplicated by using the primary python library
+`acumos-python-client`.  This execution usage is experimental, but the APIs should
+be consistent for use.
+
+```
+python acumos-python-client/testing/wrap/runner.py  --port 8884 --modeldir model_detect/
+```
+
+The above command uses the testing-based model runner to launch a singular model
+that responds on a single port in native `protobuf` format.
+
+
+
 ## Direct Evaluation
 
 * For a graphical experience, view the swagger-generated UI at [http://localhost:8884/ui].

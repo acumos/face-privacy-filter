@@ -60,6 +60,9 @@ th, .header {
   background-color: #4CAF50;
   color: white;
 }
+.tableConfig td:nth-child(odd) {
+    text-align:right;
+}
 
 tr:nth-child(even){
   background-color: #c8c8c8;

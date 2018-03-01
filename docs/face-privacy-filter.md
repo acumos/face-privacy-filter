@@ -72,3 +72,6 @@ incoming images and outputs detected faces.
 The [release notes](release-notes.md) catalog additions and modifications
 over various version changes.
 
+# Metadata Examples
+* [example detect catalog image](catalog_image_detect.png) - [url source](https://flic.kr/p/xqw25C)
+* [example blur catalog image](catalog_image_blur.png)  - [url source](https://flic.kr/p/bEgYbs)

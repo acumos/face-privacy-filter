@@ -8,6 +8,7 @@ Rewrite to utilize simple image-based processing steps.
 <head>
 <title>Face Privacy Processing</title>
 <link rel="stylesheet" type="text/css" href="face-privacy.css" />
+<script type="text/javascript" src="protobuf/protobuf.min.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="face-privacy.js"></script>
 </head>
@@ -16,7 +17,7 @@ Rewrite to utilize simple image-based processing steps.
     <div>
         <video class="videoWin" id="srcVideo" width="380" height="270" muted controls>
             <source id="mp4" src="images/commercial.mp4" type="video/mp4"></source>
-            Your browser does not support the video tag. Please use Chrome.
+            Your browser does not support the video tag. Please use Chrome or Firefox.
         </video>
         <canvas id="srcImgCanvas" width="380" height="270" ></canvas>
         <span>raw image</span>
@@ -24,6 +25,12 @@ Rewrite to utilize simple image-based processing steps.
     <div>
         <img id="destImg" width="380" height="270" />
         <span>post-processed image</span>
+    </div>
+</div>
+<br />
+<div id="resultText">
+   <div>
+    If utilized textual results would go here...
     </div>
 </div>
 <hr  />
@@ -58,12 +65,21 @@ Rewrite to utilize simple image-based processing steps.
 
 <hr  />
 <form action="javascript:void(0);">
-    <label for="serverUrl">Transform URL:</label><input type="text" name="serverUrl" id="serverUrl" size="60" />
-    <br /><span class="tiny"><strong>PRO TIP:</strong>Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span>
+<table class="tableConfig">
+    <tr><td><label for="serverUrl">Transform URL:</label></td>
+        <td><input type="text" name="serverUrl" id="serverUrl" size="60" /></td></tr>
+    <tr><td><label for="protoMethod">Protobuf Method:</label></td>
+        <td><select name="protoMethod" id="protoMethod" ><option value="">(disable, not loaded)</option></select></td></tr>
+    <tr><td><label for="protoButton">Protobuf Message:</label></td>
+        <td><button type="button" name="protoInput" id="protoInput" >Download Encoded Input</button> -
+        <button type="button" name="protoOutput" id="protoOutput" >Download Encoded Response</button></td></tr>
+    <tr><td><span class="tiny"><strong>PRO TIP:</strong></span></td>
+        <td><span class="tiny">Add the query parameter <em><a href="." id="serverLink">url-image</a></em> to auto-load this URL.</span></td></tr>
+</table>
 </form>
 <hr  />
 <div>
-    Face privacy processing using <em>detected faces</em> and a subsequent processinf operation.
+    Face privacy processing using <em>detected faces</em> and a subsequent processing operation.
 <br/>
 <br/>
 <a href='http://www.research.att.com/projects/Video/'>Video and Multimedia Technologies Research</a>
