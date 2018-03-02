@@ -1,0 +1,22 @@
+syntax = "proto3";
+package yieGOMVkeFReJTCdImEYAzGjafuIsmjG;
+
+service Model {
+  rpc detect (FaceImage) returns (DetectionFrames);
+}
+
+message FaceImage {
+  repeated string mime_type = 1;
+  repeated bytes image_binary = 2;
+}
+
+message DetectionFrames {
+  repeated int64 image = 1;
+  repeated int64 region = 2;
+  repeated int64 x = 3;
+  repeated int64 y = 4;
+  repeated int64 w = 5;
+  repeated int64 h = 6;
+  repeated string mime_type = 7;
+  repeated bytes image_binary = 8;
+}

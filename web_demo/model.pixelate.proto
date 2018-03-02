@@ -2,7 +2,7 @@ syntax = "proto3";
 package sapLzHrujUMPBGCBEMWQFxEIMsxocFrG;
 
 service Model {
-  rpc transform (FaceImage) returns (DetectionFrames);
+  rpc pixelate (FaceImage) returns (TransformedImage);
 }
 
 message FaceImage {
@@ -19,4 +19,9 @@ message DetectionFrames {
   repeated int64 h = 6;
   repeated string mime_type = 7;
   repeated bytes image_binary = 8;
+}
+
+message TransformedImage {
+  repeated string mime_type = 1;
+  repeated bytes image_binary = 2;
 }
