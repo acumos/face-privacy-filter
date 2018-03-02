@@ -28,7 +28,7 @@ import numpy as np
 import pandas as pd
 
 
-def model_create_pipeline(transformer):
+def model_create_pipeline(transformer, funcName):
     from acumos.session import Requirements
     from acumos.modeling import Model, List, create_namedtuple
     import sklearn
@@ -55,7 +55,9 @@ def model_create_pipeline(transformer):
 
     # compute path of this package to add it as a dependency
     package_path = path.dirname(path.realpath(__file__))
-    return Model(transform=predict_class), Requirements(packages=[package_path], reqs=[pd, np, sklearn],
+    objModelDeclare = {}
+    objModelDeclare[funcName] = predict_class
+    return Model(**objModelDeclare), Requirements(packages=[package_path], reqs=[pd, np, sklearn],
                                                         req_map={cv2: 'opencv-python'})
 
 
@@ -86,7 +88,7 @@ def main(config={}):
         else:
             print("Error: Functional mode '{:}' unknown, aborting create".format(config['function']))
         inputDf = transform.generate_in_df()
-        pipeline, reqs = model_create_pipeline(transform)
+        pipeline, reqs = model_create_pipeline(transform, config['function'])
 
         # formulate the pipeline to be used
         model_name = MODEL_NAME + "_" + config['function']

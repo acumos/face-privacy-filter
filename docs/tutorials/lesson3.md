@@ -13,7 +13,8 @@ into the browser and accesing a locally hosted server API, as configured
 in [the previous tutorial](lesson2.md).
 
 If you want to run the test locally, you can use the built-in python
-webserver with the line below while working in the `web_demo` directory.
+webserver with the line below while working in the `web_demo` directory
+(assuming you're running python3).
 ```
 python -m http.server 5000
 ```
@@ -51,8 +52,11 @@ image that was sent to the remote service.  When available, the <strong>Download
 button will be enabled and a binary file will be generated in the browser.
 
 ```
-protoc --decode=sapLzHrujUMPBGCBEMWQFxEIMsxocFrG.FaceImage model.proto < protobuf.bin
+protoc --decode=sapLzHrujUMPBGCBEMWQFxEIMsxocFrG.FaceImage model.pixelate.proto < protobuf.bin
 ```
+
+**NOTE** The specific package name may have changed since the time of writing,
+so be sure to check the contents of the current `.proto` file.
 
 
 ## Example mood classification demo (HTTP parameters)

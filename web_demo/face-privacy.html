@@ -67,9 +67,10 @@ Rewrite to utilize simple image-based processing steps.
 <form action="javascript:void(0);">
 <table class="tableConfig">
     <tr><td><label for="serverUrl">Transform URL:</label></td>
-        <td><input type="text" name="serverUrl" id="serverUrl" size="60" /></td></tr>
+        <td><input type="text" name="serverUrl" id="serverUrl" size="60" />
+        <br /><span class="tiny"><em>Note: The endpoint url may be modified when a new method below is utilized.</em></span></td></tr>
     <tr><td><label for="protoMethod">Protobuf Method:</label></td>
-        <td><select name="protoMethod" id="protoMethod" ><option value="">(disable, not loaded)</option></select></td></tr>
+        <td><select name="protoMethod" id="protoMethod" ><option value="">(disabled, not loaded)</option></select></td></tr>
     <tr><td><label for="protoButton">Protobuf Message:</label></td>
         <td><button type="button" name="protoInput" id="protoInput" >Download Encoded Input</button> -
         <button type="button" name="protoOutput" id="protoOutput" >Download Encoded Response</button></td></tr>

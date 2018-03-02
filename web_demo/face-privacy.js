@@ -96,18 +96,26 @@ $(document).ready(function() {
     imageLoader.addEventListener('change', handleImage, false);
 
     //if protobuf is enabled, fire load event for it as well
-    protobuf.load("model.proto", function(err, root) {
+    $(document.body).data('hdparams').protoObj = {};  //clear from last load
+    protobuf_load("model.pixelate.proto", true);
+    protobuf_load("model.detect.proto");
+
+    //trigger first click
+    $("#sourceRibbon div")[0].click();
+});
+
+
+function protobuf_load(pathProto, forceSelect) {
+    protobuf.load(pathProto, function(err, root) {
         if (err) {
             console.log("[protobuf]: Error!: "+err);
             throw err;
         }
-        $(document.body).data('hdparams').protoObj = null;  //clear from last load
-        var numMethods = 0;
+        var domSelect = $("#protoMethod");
+        var numMethods = domSelect.children().length;
         $.each(root.nested, function(namePackage, objPackage) {    // walk all
             if ('Model' in objPackage && 'methods' in objPackage.Model) {    // walk to model and functions...
                 var typeSummary = {'root':root, 'methods':{} };
-                var domSelect = $("#protoMethod");
-                domSelect.empty();
                 $.each(objPackage.Model.methods, function(nameMethod, objMethod) {  // walk methods
                     typeSummary['methods'][nameMethod] = {};
                     typeSummary['methods'][nameMethod]['typeIn'] = namePackage+'.'+objMethod.requestType;
@@ -115,28 +123,26 @@ $(document).ready(function() {
                     typeSummary['methods'][nameMethod]['service'] = namePackage+'.'+nameMethod;
 
                     //create HTML object as well
-                    var domOpt = $("<option />").attr("value", nameMethod).text(
+                    var namePretty = namePackage+"."+nameMethod;
+                    var domOpt = $("<option />").attr("value", namePretty).text(
                         nameMethod+ " (input: "+objMethod.requestType
                         +", output: "+objMethod.responseType+")");
                     if (numMethods==0) {    // first method discovery
                         domSelect.append($("<option />").attr("value","").text("(disabled, not loaded)")); //add 'disabled'
+                    }
+                    if (forceSelect) {
                         domOpt.attr("selected", 1);
                     }
                     domSelect.append(domOpt);
                     numMethods++;
                 });
-                $(document.body).data('hdparams').protoObj = typeSummary;   //save new method set
+                $(document.body).data('hdparams').protoObj[namePackage] = typeSummary;   //save new method set
                 $("#protoContainer").show();
             }
         });
         console.log("[protobuf]: Load successful, found "+numMethods+" model methods.");
     });
-
-
-    //trigger first click
-    $("#sourceRibbon div")[0].click();
-});
-
+}
 
 /**
  * Called after a new video has loaded (at least the video metadata has loaded)
@@ -171,9 +177,14 @@ function nextFrame() {
     switchImage(hd.video, true);
 }
 
-function updateLink(domId) {
+function updateLink(domId, newServer) {
     var sPageURL = decodeURIComponent(window.location.search.split('?')[0]);
-    var newServer = $(document.body).data('hdparams')['classificationServer'];
+    if (newServer==undefined) {
+        newServer = $(document.body).data('hdparams')['classificationServer'];
+    }
+    else {
+        $("#serverUrl").val(newServer);
+    }
     var sNewUrl = sPageURL+"?url-image="+newServer;
     $("#"+domId).attr('href', sNewUrl);
 }
@@ -270,14 +281,24 @@ function getUrlParameter(sParam) {
 function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
     var dataURL = srcCanvas.toDataURL('image/jpeg', 1.0);
     var hd = $(document.body).data('hdparams');
-    var serviceURL = hd.classificationServer;
     var sendPayload = null;
+
+    var nameProtoMethod = $("#protoMethod option:selected").attr('value');
+    var methodKeys = null;
+    if (nameProtoMethod && nameProtoMethod.length) {     //valid protobuf type?
+        var partsURL = hd.classificationServer.split("/");
+        methodKeys = nameProtoMethod.split(".", 2);       //modified for multiple detect/pixelate models
+        partsURL[partsURL.length-1] = methodKeys[1];
+        hd.classificationServer = partsURL.join("/");   //rejoin with new endpoint
+        updateLink("serverLink", hd.classificationServer);
+    }
+
+    var serviceURL = hd.classificationServer;
     var request = new XMLHttpRequest();     // create request to manipulate
     request.open("POST", serviceURL, true);
 
-    var nameProtoMethod = $("#protoMethod option:selected").attr('value');
     //console.log("[doPostImage]: Selected method ... '"+typeInput+"'");
-    if (nameProtoMethod.length) {     //valid protobuf type?
+    if (nameProtoMethod && nameProtoMethod.length) {     //valid protobuf type?
         var blob = dataURItoBlob(dataURL, true);
 
         // fields from .proto file at time of writing...
@@ -285,10 +306,12 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
         //      repeated string mime_type = 1;   -> becomes "mimeType" (NOTE repeated type)
         //      repeated bytes image_binary = 2; -> becomes "imageBinary"
         //    }
+
+        //TODO: should we always assume this is input? answer: for now, YES, always image input!
         var inputPayload = { "mimeType": [blob.type], "imageBinary": [blob.bytes] };
 
         // ---- method for processing from a type ----
-        var msgInput = hd.protoObj['root'].lookupType(hd.protoObj['methods'][nameProtoMethod]['typeIn']);
+        var msgInput = hd.protoObj[methodKeys[0]]['root'].lookupType(hd.protoObj[methodKeys[0]]['methods'][methodKeys[1]]['typeIn']);
         // Verify the payload if necessary (i.e. when possibly incomplete or invalid)
         var errMsg = msgInput.verify(inputPayload);
         if (errMsg) {
@@ -350,7 +373,7 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
     hd.imageIsWaiting = true;
     request.onreadystatechange=function() {
         if (request.readyState==4 && request.status>=200 && request.status<300) {
-            if (nameProtoMethod.length) {     //valid protobuf type?
+            if (methodKeys!=null) {     //valid protobuf type?
                 //console.log(request);
                 var bodyEncodedInString = new Uint8Array(request.response);
                 //console.log(bodyEncodedInString);
@@ -359,7 +382,7 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
                 hd.protoPayloadOutput = bodyEncodedInString;
 
                 // ---- method for processing from a type ----
-                var msgOutput = hd.protoObj['root'].lookupType(hd.protoObj['methods'][nameProtoMethod]['typeOut']);
+                var msgOutput = hd.protoObj[methodKeys[0]]['root'].lookupType(hd.protoObj[methodKeys[0]]['methods'][methodKeys[1]]['typeOut']);
                 var objRecv = msgOutput.decode(hd.protoPayloadOutput);
                 //console.log(objRecv);
                 hd.protoRes = objRecv;
@@ -381,22 +404,28 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
                     });
                     domTable = $("<table />").append(domTable);     // create embedded table
 
-                    domResult.empty().append($("<strong />").html("Results")).show();
                     var idxImg = -1;
-                    for (var i=0; i<objRecv.region.length; i++) {       //find the right region
-                        if (objRecv.region[i]==-1) {                    //special indicator for original image
-                            idxImg = i;
+                    if ('region' in msgOutput.fields) {             // did we get regions?
+                        for (var i=0; i<objRecv.region.length; i++) {       //find the right region
+                            if (objRecv.region[i]==-1) {                    //special indicator for original image
+                                idxImg = i;
+                            }
+                            var domRow = $("<tr />");
+                            var strDisplay = [];
+                            $.each(arrNames, function(idx, name) {      //collect data from each column
+                                domRow.append($("<td />").html(objRecv[name][i]));
+                            });
+                            domTable.append(domRow);
+                            //domResult.append($("div").html(objRecv.region));
                         }
-                        var domRow = $("<tr />");
-                        var strDisplay = [];
-                        $.each(arrNames, function(idx, name) {      //collect data from each column
-                            domRow.append($("<td />").html(objRecv[name][i]));
-                        });
-                        domTable.append(domRow);
-                        //domResult.append($("div").html(objRecv.region));
+                        domResult.empty().append($("<strong />").html("Results")).show();
+                        domResult.append(domTable);
                     }
-                    domResult.append(domTable);
-                    if (idxImg != -1) {
+                    else {                                  //got images, get that chunk directly
+                        idxImg = 0;
+                    }
+
+                    if (idxImg != -1) {                     //got any valid image? display it
                         //console.log(objRecv.mimeType[idxImg]);
                         //console.log(objRecv.imageBinary[idxImg]);
                         //var strImage = Uint8ToString(objRecv.imageBinary[idxImg]);
