@@ -57,8 +57,10 @@ def model_create_pipeline(transformer, funcName):
     package_path = path.dirname(path.realpath(__file__))
     objModelDeclare = {}
     objModelDeclare[funcName] = predict_class
-    return Model(**objModelDeclare), Requirements(packages=[package_path], reqs=[pd, np, sklearn],
-                                                        req_map={cv2: 'opencv-python'})
+    # add the model dependency manually because of the way we constructed the package;
+    # the opencv-python/cv2 dependency is not picked up automagically
+    return Model(**objModelDeclare), Requirements(packages=[package_path], reqs=[pd, np, sklearn, 'opencv-python'],
+                                                  req_map={cv2: 'opencv-python'})
 
 
 def main(config={}):
