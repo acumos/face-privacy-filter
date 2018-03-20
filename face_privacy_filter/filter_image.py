@@ -59,7 +59,7 @@ def model_create_pipeline(transformer, funcName):
     objModelDeclare[funcName] = predict_class
     # add the model dependency manually because of the way we constructed the package;
     # the opencv-python/cv2 dependency is not picked up automagically
-    return Model(**objModelDeclare), Requirements(packages=[package_path], reqs=[pd, np, sklearn, 'opencv-python'],
+    return Model(**objModelDeclare), Requirements(packages=[package_path], reqs=[pd, np, sklearn, 'opencv-python', 'matplotlib'],
                                                   req_map={cv2: 'opencv-python'})
 
 
@@ -132,8 +132,6 @@ def main(config={}):
 
         if not config['csv_input']:
             dfPred = FaceDetectTransform.suppress_image(dfPred)
-        print("ALMOST DONE")
-        print(dfPred)
 
         if config['predict_path']:
             print("Writing prediction to file '{:}'...".format(config['predict_path']))
