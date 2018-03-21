@@ -67,6 +67,7 @@ regions and the face back to the user.  The region marked with `-1`
 and a valid `mime_type` parameter will
 always be the region with the original image.
 
+
 ```
 [
     {
@@ -107,6 +108,7 @@ always be the region with the original image.
 * analyzed output - The second type of output produces processed
 images as an output.  These images are base64 encoded with a decoding
 mime type.
+
 ```
 [
     {
@@ -139,11 +141,12 @@ that responds on a single port in native `protobuf` format.
 * Additionally, a simple command-line utility could be used to post an image
 and mime type to the main interface.  Additional examples for posting base64 encoded
 images from javascript can be [found on StackOverflow](https://stackoverflow.com/a/20285053).
+
 ```
 curl -F base64_data=@../web_demo/images/face_renion.jpg -F mime_type="image/jpeg" "http://localhost:8884/transform"
 ```
 
-## Sample Inages
+## Sample Images
 Sample images are provided in the `testing` directory and were originally sourced
 from the URLs below.
 

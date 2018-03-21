@@ -3,6 +3,7 @@ package sapLzHrujUMPBGCBEMWQFxEIMsxocFrG;
 
 service Model {
   rpc pixelate (FaceImage) returns (TransformedImage);
+  rpc detect (FaceImage) returns (TransformedImage);
 }
 
 message FaceImage {
@@ -25,3 +26,4 @@ message TransformedImage {
   repeated string mime_type = 1;
   repeated bytes image_binary = 2;
 }
+
