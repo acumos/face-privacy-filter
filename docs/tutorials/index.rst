@@ -15,12 +15,14 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
+
+========
 Tutorial
---------
-    
+========
+
 .. toctree::
        :maxdepth: 2
-    
+
        lesson1
        lesson2
        lesson3

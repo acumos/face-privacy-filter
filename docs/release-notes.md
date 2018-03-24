@@ -18,7 +18,7 @@
 .. ===============LICENSE_END=========================================================
 -->
 
-# Release Notes
+# Face Privacy Filter Release Notes
 ## 0.2
 ### 0.2.3
 * Documentation and package update to use install instructions instead of installing

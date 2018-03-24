@@ -18,7 +18,7 @@
 .. ===============LICENSE_END=========================================================
 -->
 
-# face-privacy-filter
+# Face Privacy Filter Guide
 A model for face detection and suppression.
 
 ## Image Analysis for Face-based Privacy Filtering

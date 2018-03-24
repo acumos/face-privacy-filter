@@ -15,12 +15,14 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
-face-privacy-filter
--------------------
-    
+
+===================
+Face Privacy Filter
+===================
+
 .. toctree::
        :maxdepth: 2
-    
-       face-privacy-filter
+
        release-notes
-       tutorials/index                  
+       face-privacy-filter
+       tutorials/index
