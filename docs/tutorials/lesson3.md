@@ -72,7 +72,7 @@ image that was sent to the remote service.  When available, the <strong>Download
 button will be enabled and a binary file will be generated in the browser.
 
 ```
-protoc --decode=sapLzHrujUMPBGCBEMWQFxEIMsxocFrG.FaceImage model.pixelate.proto < protobuf.bin
+protoc --decode=HipTviKTkIkcmyuMCIAIDkeOOQQYyJne.FaceImage model.pixelate.proto < protobuf.bin
 ```
 
 **NOTE** The specific package name may have changed since the time of writing,

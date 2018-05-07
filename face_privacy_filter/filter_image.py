@@ -37,21 +37,35 @@ def model_create_pipeline(transformer, funcName):
 
     # derive the input type from the transformer
     type_list, type_name = transformer._type_in  # it looked like this {'test': int, 'tag': str}
-    input_type = [(k, List[type_list[k]]) for k in type_list]
+    input_type = [(k, type_list[k]) for k in type_list]   # flat, no lists
     type_in = create_namedtuple(type_name, input_type)
+    name_multiple_in = type_name + "s"
+    input_set = create_namedtuple(type_name + "Set", [(name_multiple_in, List[type_in])])
 
     # derive the output type from the transformer
     type_list, type_name = transformer._type_out
-    output_type = [(k, List[type_list[k]]) for k in type_list]
+    output_type = [(k, type_list[k]) for k in type_list]  # flat, no lists
     type_out = create_namedtuple(type_name, output_type)
+    name_multiple_out = type_name + "s"
+    output_set = create_namedtuple(type_name + "Set", [(name_multiple_out, List[type_out])])
 
-    def predict_class(val_wrapped: type_in) -> type_out:
+    def predict_class(val_wrapped: input_set) -> output_set:
         '''Returns an array of float predictions'''
-        df = pd.DataFrame(list(zip(*val_wrapped)), columns=val_wrapped._fields)
-        # df = pd.DataFrame(np.column_stack(val_wrapped), columns=val_wrapped._fields)  # numpy doesn't like binary
+        # print("-===== input -===== ")
+        # print(input_set)
+        df = pd.DataFrame(getattr(val_wrapped, name_multiple_in), columns=type_in._fields)
+        # print("-===== df -===== ")
+        # print(df)
         tags_df = transformer.predict(df)
-        tags_list = type_out(*(col for col in tags_df.values.T))  # flatten to tag set
-        return tags_list
+        # print("-===== out df -===== ")
+        # print(tags_df)
+        tags_parts = tags_df.to_dict('split')
+        # print("-===== out list -===== ")
+        # print(output_set)
+        print("[{}]: Input {} row(s) ({}), output {} row(s) ({}))".format(
+              funcName, len(df), input_set, len(tags_df), output_set))
+        tags_list = [type_out(*r) for r in tags_parts['data']]
+        return output_set(tags_list)
 
     # compute path of this package to add it as a dependency
     package_path = path.dirname(path.realpath(__file__))

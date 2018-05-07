@@ -37,11 +37,11 @@ composed together for operation.
 
 * Dump the `detect` model to disk.
 ```
-python face_privacy_filter/filter_image.py -d model_detect -f detect
+python face_privacy_filter/filter_image.py -f detect  -d model_detect
 ```
 * Dump the `pixelate` model to disk.
 ```
-python face_privacy_filter/filter_image.py -d model_pix -f pixelate
+python face_privacy_filter/filter_image.py -f pixelate -d model_pix
 ```
 
 
@@ -57,6 +57,46 @@ python face_privacy_filter/filter_image.py -d model_detect -p output.csv -i web_
 * Example for evaluating the `pixelate` model from disk and a previously produced detect object
 ```
 python face_privacy_filter/filter_image.py -d model_pix -i detect.csv -p output.jpg --csv_input
+```
+
+## Using the client model runner
+Getting even closer to what it looks like in a deployed model, you can also use
+the model runner code to run your full cascade (detection + pixelate) transform
+locally. *(added v0.3.0)*
+
+1. First, decide the ports to run your detection and pixelate models. In the example
+below, detection runs on port `8884` and pixelation runs on port `8885`.  For the
+runner to properly forward requests for you, provide a simple JSON file example
+called `runtime.json` in the working directory that you run the model runner.
+
+```
+# cat runtime.json
+{downstream": ["http://127.0.0.1:8885/pixelate"]}
+```
+
+2. Second, dump and launch the face detection model. If you modify the ports to
+run the models, please change them accordingly.  This command example assumes
+that you have cloned the client library in a relative path of `../acumos-python-client`.
+The first line removes any prior model directory, the second dumps the detect
+model to disk, and the third runs the model.
+
+```
+rm -rf model_detect/;  \
+    python face_privacy_filter/filter_image.py -d model_detect -f detect; \
+    python ../acumos-python-client/testing/wrap/runner.py --port 8884 --modeldir model_detect/face_privacy_filter_detect
+
+```
+
+3. Finally, dump and launch the face pixelation model. Again, if you modify the ports to
+run the models, please change them accordingly.  Aside from the model and port,
+the main difference between the above line is that the model runner is instructed
+to *ignore* the downstream forward (`runtime.json`) file so that it doesn't attempt
+to forward the request to itself.
+
+```
+rm -rf model_pix;  \
+    python face_privacy_filter/filter_image.py -d model_pix -f pixelate; \
+    python ../acumos-python-client/testing/wrap/runner.py --port 8885 --modeldir model_pix/face_privacy_filter_pixelate  --no_downstream
 ```
 
 

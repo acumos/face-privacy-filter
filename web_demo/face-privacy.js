@@ -27,6 +27,7 @@
  D. Gibbon 4/19/17 updated to new getUserMedia api, https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
  D. Gibbon 8/1/17 adapted for system
  E. Zavesky 10/19/17 adapted for video+image
+ E. Zavesky 05/05/18 adapted for row-based image and other results
  */
 
 "use strict";
@@ -44,7 +45,6 @@ $(document).ready(function() {
 		protoObj: null,   // to be back-filled after protobuf load {'root':obj, 'methods':{'xx':{'typeIn':x, 'typeOut':y}} }
 		protoPayloadInput: null,   //payload for encoded message download (if desired)
 		protoPayloadOutput: null,   //payload for encoded message download (if desired)
-		protoRes: null,  //TEMPORARY
 		frameCounter: 0,
 		frameInterval: 500,		// Milliseconds to sleep between sending frames to reduce server load and reduce results updates
 		frameTimer: -1,		// frame clock for processing
@@ -128,6 +128,7 @@ function protobuf_load(pathProto, forceSelect) {
     protobuf.load(pathProto, function(err, root) {
         if (err) {
             console.log("[protobuf]: Error!: "+err);
+            domResult.html("<strong>"+"[protobuf]: Error!: "+err+"</strong>");
             throw err;
         }
         var domSelect = $("#protoMethod");
@@ -315,6 +316,7 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
     var serviceURL = hd.classificationServer;
     var request = new XMLHttpRequest();     // create request to manipulate
     request.open("POST", serviceURL, true);
+    var domResult = $("#resultText");
 
     //console.log("[doPostImage]: Selected method ... '"+typeInput+"'");
     if (nameProtoMethod && nameProtoMethod.length) {     //valid protobuf type?
@@ -327,14 +329,16 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
         //    }
 
         //TODO: should we always assume this is input? answer: for now, YES, always image input!
-        var inputPayload = { "mimeType": [blob.type], "imageBinary": [blob.bytes] };
+        var inputPayload = {'Images':[{ "mimeType": blob.type, "imageBinary": blob.bytes }]};
 
         // ---- method for processing from a type ----
         var msgInput = hd.protoObj[methodKeys[0]]['root'].lookupType(hd.protoObj[methodKeys[0]]['methods'][methodKeys[1]]['typeIn']);
         // Verify the payload if necessary (i.e. when possibly incomplete or invalid)
         var errMsg = msgInput.verify(inputPayload);
         if (errMsg) {
-            console.log("[doPostImage]: Error during type verify for object input into protobuf method.");
+            var errStr = "[doPostImage]: Error during type verify for object input into protobuf method."+errMsg;
+            console.log(errStr);
+            domResult.html("<strong>"+errStr+"</strong>");
             throw Error(errMsg);
         }
         // Create a new message
@@ -402,59 +406,92 @@ function doPostImage(srcCanvas, dstImg, dataPlaceholder) {
 
                 // ---- method for processing from a type ----
                 var msgOutput = hd.protoObj[methodKeys[0]]['root'].lookupType(hd.protoObj[methodKeys[0]]['methods'][methodKeys[1]]['typeOut']);
-                var objRecv = msgOutput.decode(hd.protoPayloadOutput);
-                //console.log(objRecv);
-                hd.protoRes = objRecv;
+                var objOutput = null;
+                try {
+                    objOutput = msgOutput.decode(hd.protoPayloadOutput);
+                }
+                catch(err) {
+                    var errStr = "Error: Failed to parse protobuf response, was the right method chosen? (err: "+err.message+")";
+                    console.log(errStr);
+                    domResult.html(errStr);
+                    hd.imageIsWaiting = false;
+                    return false;
+                }
+                var nameRepeated = null;
 
-                // detect what mode we're in (detect alone or processed?)...
-                if (!Array.isArray(objRecv.mimeType)) {
-                    $dstImg.attr('src', "data:"+objRecv.mimeType+";base64,"+objRecv.imageBinary).removeClass('workingImage');
+                // NOTE: this code expects one top-level item to be an array of nested results
+                //  e.g.   ImageSet [ Image{mime_type, image_binary}, .... ]
+                //  e.g.   DetectionFrameSet [ DetectionFrame{x, y, ...., mime_type, image_binary}, .... ]
+
+                //try to crawl the fields in the protobuf....
+                var numFields = 0;
+                $.each(msgOutput.fields, function(name, val) {           //collect field names
+                    if (val.repeated) {     //indicates it's a repeated field (likely an array)
+                        nameRepeated = name;      //save this as last repeated field (ideally there is just one)
+                    }
+                    numFields += 1;
+                });
+                if (numFields > 1) {
+                    var errStr = "Error: Expected array/repeated structure in response, but got non-flat array result ("+numFields+" fields)";
+                    console.log(errStr);
+                    domResult.html(errStr);
+                    hd.imageIsWaiting = false;
+                    return false;
+                }
+                var objRecv = objOutput[nameRepeated];
+
+                //grab the nested array type and print out the fields of interest
+                var typeNested = methodKeys[0]+"."+msgOutput.fields[nameRepeated].type;
+                var msgOutputNested = hd.protoObj[methodKeys[0]]['root'].lookupType(typeNested);
+                //console.log(msgOutputNested);
+                var domTable = $("<tr />");
+                var arrNames = [];
+                $.each(msgOutputNested.fields, function(name, val) {           //collect field names
+                    var nameClean = val.name;
+                    if (nameClean != 'imageBinary') {
+                        domTable.append($("<th />").html(nameClean));
+                        arrNames.push(nameClean);
+                    }
+                });
+                domTable = $("<table />").append(domTable);     // create embedded table
+
+                // loop through all members of array to do two things:
+                //  (1) find the biggest/best image
+                //  (2) print out the textual fields
+                var objBest = null;
+                $.each(objRecv, function(idx, val) {
+                    if ('imageBinary' in val) {
+                        // at this time, we only support ONE output image, so we will loop through
+                        //  to grab the largest image (old code could grab the one with region == -1)
+                        if (objBest==null || val.imageBinary.length>objBest.imageBinary.length) {
+                            objBest = val;
+                        }
+                    }
+
+                    var domRow = $("<tr />");
+                    $.each(arrNames, function(idx, name) {      //collect data from each column
+                        domRow.append($("<td />").html(val[name]));
+                    });
+                    domTable.append(domRow);
+                });
+                domResult.empty().append($("<strong />").html("Results")).show();
+                domResult.append(domTable);
+
+
+                //did we find an image? show it now!
+                if (objBest != null) {
+                    var strImage = btoa(String.fromCharCode.apply(null, objBest.imageBinary));
+                    $dstImg.attr('src', "data:"+objBest.mimeType+";base64,"+strImage).removeClass('workingImage');
                 }
                 else {
-                    var domResult = $("#resultText");
-                    var domTable = $("<tr />");
-                    var arrNames = [];
-                    $.each(msgOutput.fields, function(name, val) {           //collect field names
-                        var nameClean = val.name;
-                        if (nameClean != 'imageBinary') {
-                            domTable.append($("<th />").html(nameClean));
-                            arrNames.push(nameClean);
-                        }
-                    });
-                    domTable = $("<table />").append(domTable);     // create embedded table
-
-                    var idxImg = -1;
-                    if ('region' in msgOutput.fields) {             // did we get regions?
-                        for (var i=0; i<objRecv.region.length; i++) {       //find the right region
-                            if (objRecv.region[i]==-1) {                    //special indicator for original image
-                                idxImg = i;
-                            }
-                            var domRow = $("<tr />");
-                            var strDisplay = [];
-                            $.each(arrNames, function(idx, name) {      //collect data from each column
-                                domRow.append($("<td />").html(objRecv[name][i]));
-                            });
-                            domTable.append(domRow);
-                            //domResult.append($("div").html(objRecv.region));
-                        }
-                        domResult.empty().append($("<strong />").html("Results")).show();
-                        domResult.append(domTable);
-                    }
-                    else {                                  //got images, get that chunk directly
-                        idxImg = 0;
-                    }
-
-                    if (idxImg != -1) {                     //got any valid image? display it
-                        //console.log(objRecv.mimeType[idxImg]);
-                        //console.log(objRecv.imageBinary[idxImg]);
-                        //var strImage = Uint8ToString(objRecv.imageBinary[idxImg]);
-                        var strImage = btoa(String.fromCharCode.apply(null, objRecv.imageBinary[idxImg]));
-                        $dstImg.attr('src', "data:"+objRecv.mimeType[idxImg]+";base64,"+strImage).removeClass('workingImage');
-                    }
+                    var errStr = "Error: No valid image data was found, aborting display.";
+                    console.log(errStr);
+                    domResult.html(errStr);
+                    hd.imageIsWaiting = false;
+                    return false;
                 }
-
             }
-            else {
+            else {       //legacy code where response was in base64 encoded image...
                 var responseJson = $.parseJSON(request.responseText);
                 var respImage = responseJson[0];
                 // https://stackoverflow.com/questions/21227078/convert-base64-to-image-in-javascript-jquery

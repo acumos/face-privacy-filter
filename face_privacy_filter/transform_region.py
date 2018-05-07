@@ -65,12 +65,12 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
     def _type_in(self):
         """Custom input type for this processing transformer"""
         input_dict = RegionTransform.generate_in_dict()
-        return {k: type(input_dict[k]) for k in input_dict}, "DetectionFrames"
+        return {k: type(input_dict[k]) for k in input_dict}, "DetectionFrame"
 
     @property
     def _type_out(self):
         """Custom input type for this processing transformer"""
-        return {FaceDetectTransform.COL_IMAGE_MIME: str, FaceDetectTransform.COL_IMAGE_DATA: bytes}, "TransformedImage"
+        return {FaceDetectTransform.COL_IMAGE_MIME: str, FaceDetectTransform.COL_IMAGE_DATA: bytes}, "Image"
 
     def score(self, X, y=None):
         return 0
@@ -105,7 +105,7 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
             img_mime = 'image/jpeg'  # image_data['mime']
 
             listData.append(RegionTransform.generate_out_dict(media=img_mime, bin_stream=img_binary))
-            print("IMAGE {:} found {:} total rows".format(image_data['image'], len(image_data['regions'])))
+            # print("IMAGE {:} found {:} total rows".format(image_data['image'], len(image_data['regions'])))
         return pd.DataFrame(listData, columns=RegionTransform.output_names_())
 
     @staticmethod
