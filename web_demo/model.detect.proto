@@ -2,7 +2,7 @@ syntax = "proto3";
 package wvHeYuPGGFSeCSLULBxxJquKipiUljuZ;
 
 service Model {
-  rpc detect (Image) returns (DetectionFrameSet);
+  rpc detect (Image) returns (RegionDetectionSet);
 }
 
 message Image {
@@ -10,11 +10,11 @@ message Image {
   bytes image_binary = 2;
 }
 
-message DetectionFrameSet {
-  repeated DetectionFrame DetectionFrames = 1;
+message RegionDetectionSet {
+  repeated RegionDetection RegionDetections = 1;
 }
 
-message DetectionFrame {
+message RegionDetection {
   int64 image = 1;
   int64 region = 2;
   int64 x = 3;
