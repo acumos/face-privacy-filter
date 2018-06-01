@@ -1,0 +1,54 @@
+syntax = "proto3";
+package XGGINkLKNWOtfRnNHcOkTpAsWCpEBevm;
+
+service Model {
+  rpc detect (Image) returns (RegionDetectionSet);
+  rpc embed (Image) returns (RegionEmbeddingSet);
+  rpc recognize (RegionDetectionSet) returns (RegionTagSet);
+  rpc recognize_image (Image) returns (RegionTagSet);
+}
+
+message Image {
+  string mime_type = 1;
+  bytes image_binary = 2;
+}
+
+message RegionDetectionSet {
+  repeated RegionDetection RegionDetections = 1;
+}
+
+message RegionDetection {
+  int64 image = 1;
+  int64 region = 2;
+  int64 x = 3;
+  int64 y = 4;
+  int64 w = 5;
+  int64 h = 6;
+  string mime_type = 7;
+  bytes image_binary = 8;
+}
+
+message RegionEmbeddingSet {
+  repeated RegionEmbedding RegionEmbeddings = 1;
+}
+
+message RegionEmbedding {
+  int64 image = 1;
+  int64 region = 2;
+  int64 x = 3;
+  int64 y = 4;
+  int64 w = 5;
+  int64 h = 6;
+  repeated double embedding = 7;
+}
+
+message RegionTagSet {
+  repeated RegionTag RegionTags = 1;
+}
+
+message RegionTag {
+  int64 image = 1;
+  int64 region = 2;
+  string tag = 3;
+  double score = 4;
+}
