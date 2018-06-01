@@ -347,6 +347,7 @@ function doPostImage(srcCanvas, dstDiv, dstImg, imgPlaceholder) {
     dstDiv = $(dstDiv);
     $("#postSpinner").remove();     //erase previously existing one
     dstDiv.append($("<div id='postSpinner' class='spinner'>&nbsp;</div>"));
+
     if (dstImg)     //convert to jquery dom object
         dstImg = $(dstImg);
 
