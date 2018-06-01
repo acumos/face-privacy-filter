@@ -45,7 +45,8 @@ the original image and mime type are also embedded with the special
 region code `-1` within the output.
 
 A web demo is included with the source code, available via the
-[Acumos Gerrit repository](https://gerrit.acumos.org/r/gitweb?p=face-privacy-filter.git;a=summary).
+[Acumos Gerrit repository](https://gerrit.acumos.org/r/gitweb?p=face-privacy-filter.git;a=summary)
+or the mirrored [Acumos Github repository](https://github.com/acumos/face-privacy-filter).
 It utilizes a protobuf javascript library and processes
 input images to detect all faces within an image.
 

@@ -1,4 +1,7 @@
 <html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 <!---
   ===============LICENSE_START=======================================================
   Acumos Apache-2.0
@@ -24,17 +27,13 @@ D. Gibbon 8/1/17
 E. Zavesky 10/17/17
 Rewrite to utilize simple image-based processing steps.
 -->
-<head>
 <title>Face Privacy Processing</title>
 <link rel="stylesheet" type="text/css" href="face-privacy.css" />
-<script type="text/javascript" src="protobuf/protobuf.min.js"></script>
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="face-privacy.js"></script>
 </head>
 <body>
 <div class="mediaRibbon">
     <div>
-        <video class="videoWin" id="srcVideo" width="380" height="270" muted controls>
+        <video class="videoWin" id="srcVideo" width="380" height="270" muted controls crossorigin>
             <source id="mp4" src="images/commercial.mp4" type="video/mp4"></source>
             Your browser does not support the video tag. Please use Chrome or Firefox.
         </video>
@@ -42,12 +41,12 @@ Rewrite to utilize simple image-based processing steps.
         <span>raw image</span>
     </div>
     <div>
-        <img id="destImg" width="380" height="270" />
+        <img id="destImg" width="380" height="270" crossorigin />
         <span>post-processed image</span>
     </div>
 </div>
 <br />
-<div id="resultText">
+<div id="resultsDiv">
    <div>
     If utilized textual results would go here...
     </div>
@@ -104,5 +103,11 @@ Rewrite to utilize simple image-based processing steps.
 <br/>
 <a href='http://www.research.att.com/projects/Video/'>Video and Multimedia Technologies Research</a>
 </div>
+<!-- move script to buttom for faster page load --->
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="protobuf/protobuf.min.js"></script>
+<script type="text/javascript" src="jquery-ajax-native.js"></script>
+<script type="text/javascript" src="demo-framework.js"></script>
+<script type="text/javascript" src="face-privacy.js"></script>
 </body>
 </html>
