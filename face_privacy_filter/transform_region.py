@@ -65,7 +65,7 @@ class RegionTransform(BaseEstimator, ClassifierMixin):
     def _type_in(self):
         """Custom input type for this processing transformer"""
         input_dict = RegionTransform.generate_in_dict()
-        return [(k, type(input_dict[k])) for k in input_dict], "DetectionFrame"
+        return [(k, type(input_dict[k])) for k in input_dict], "RegionDetection"
 
     @property
     def _type_out(self):

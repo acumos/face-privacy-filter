@@ -2,15 +2,15 @@ syntax = "proto3";
 package HipTviKTkIkcmyuMCIAIDkeOOQQYyJne;
 
 service Model {
-  rpc pixelate (DetectionFrameSet) returns (Image);
+  rpc pixelate (RegionDetectionSet) returns (Image);
   rpc detect (Image) returns (Image);
 }
 
-message DetectionFrameSet {
-  repeated DetectionFrame DetectionFrames = 1;
+message RegionDetectionSet {
+  repeated RegionDetection RegionDetections = 1;
 }
 
-message DetectionFrame {
+message RegionDetection {
   int64 image = 1;
   int64 region = 2;
   int64 x = 3;
