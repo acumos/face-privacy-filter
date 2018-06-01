@@ -22,18 +22,6 @@ body {
   font-family:Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 }
 
-#resultsDiv {
-  position: absolute;
-  top: 120px;
-  right: 50px;
-  color: #000;
-  text-align: center;
-  font-size: 20px;
-  background-color: rgba(221, 221, 221, 0.8);
-  width: 220px;
-  padding: 10px 0;
-  z-index: 2147483647;
-}
 
 hr {
     margin: 10px 0;

@@ -101,6 +101,7 @@ ENV/
 
 # Spyder project settings
 .spyderproject
+.pytest_cache
 
 # Rope project settings
 .ropeproject

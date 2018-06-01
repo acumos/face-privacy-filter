@@ -116,13 +116,13 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     @property
     def _type_in(self):
         """Custom input type for this processing transformer"""
-        return {FaceDetectTransform.COL_IMAGE_MIME: str, FaceDetectTransform.COL_IMAGE_DATA: bytes}, "Image"
+        return [(FaceDetectTransform.COL_IMAGE_MIME, str), (FaceDetectTransform.COL_IMAGE_DATA, bytes)], "Image"
 
     @property
     def _type_out(self):
         """Custom input type for this processing transformer"""
         output_dict = FaceDetectTransform.generate_out_dict()
-        return {k: type(output_dict[k]) for k in output_dict}, "DetectionFrame"
+        return [(k, type(output_dict[k])) for k in output_dict], "DetectionFrame"
 
     def score(self, X, y=None):
         return 0
