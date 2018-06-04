@@ -20,6 +20,10 @@
 
 # Face Privacy Filter Release Notes
 ## 0.3
+### 0.3.2
+* Minor updates to web JS demo pages for pending recognition model
+* *Type Change* rename input and output types to **region** monikers to better reflect target
+
 ### 0.3.1
 * Update model to use single image as input type
 * Update javascript demo to run with better CORS behavior (github htmlpreview)

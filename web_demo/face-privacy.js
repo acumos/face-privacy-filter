@@ -44,7 +44,7 @@ $(document).ready(function() {
         urlDefault = "http://localhost:8884/classify";
     demo_init({
         classificationServer: urlDefault,
-        protoList: [["model.pixelate.proto", true], ["model.detect.proto", false] ]
+        protoList: [["model.pixelate.proto", true], ["model.detect.proto", false], ["model.recognize.proto", false] ]
     });
 });
 
@@ -113,7 +113,7 @@ function processResult(data, dstDiv, methodKeys, dstImg, imgPlaceholder) {
             var nameClean = val.name;
             if (nameClean != 'imageBinary') {
                 domTable.append($("<th />").html(nameClean));
-                arrNames.push(nameClean);
+                arrNames.push([nameClean, val.repeated]);
             }
         });
         domTable = $("<table />").append(domTable);     // create embedded table
@@ -132,8 +132,11 @@ function processResult(data, dstDiv, methodKeys, dstImg, imgPlaceholder) {
             }
 
             var domRow = $("<tr />");
-            $.each(arrNames, function(idx, name) {      //collect data from each column
-                domRow.append($("<td />").html(val[name]));
+            $.each(arrNames, function(idx, field_data) {      //collect data from each column
+                //add safety to avoid printing repeated rows!
+                domRow.append($("<td />").html(!field_data[1]
+                    ? (val[field_data[0]].length < 512 ? val[field_data[0]] : "data, length "+ val[field_data[0]].length)
+                    : val[field_data[0]].length + " items"));
             });
             domTable.append(domRow);
         });
@@ -144,10 +147,13 @@ function processResult(data, dstDiv, methodKeys, dstImg, imgPlaceholder) {
         if (objBest != null) {
             //some images are too big for direct btoa/array processing...
             //dstImg.attr('src', "data:"+objBest.mimeType+";base64,"+strImage).removeClass('workingImage');
-            dstImg.attr('src', BlobToDataURI(objBest.imageBinary)).removeClass('workingImage');
+            dstImg.attr('src', BlobToDataURI(objBest.imageBinary, objBest.mimeType)).removeClass('workingImage');
+        }
+        else if (imgPlaceholder) {
+            dstImg.attr('src', imgPlaceholder).removeClass('workingImage');
         }
         else {
-            var errStr = "Error: No valid image data was found, aborting display.";
+            var errStr = "Error: No valid image data was found and no placeholder, aborting display.";
             console.log(errStr);
             dstDiv.html(errStr);
             return false;

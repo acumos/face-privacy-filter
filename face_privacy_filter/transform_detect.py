@@ -122,7 +122,7 @@ class FaceDetectTransform(BaseEstimator, ClassifierMixin):
     def _type_out(self):
         """Custom input type for this processing transformer"""
         output_dict = FaceDetectTransform.generate_out_dict()
-        return [(k, type(output_dict[k])) for k in output_dict], "DetectionFrame"
+        return [(k, type(output_dict[k])) for k in output_dict], "RegionDetection"
 
     def score(self, X, y=None):
         return 0
