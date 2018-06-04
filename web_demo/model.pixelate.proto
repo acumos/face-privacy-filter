@@ -2,8 +2,8 @@ syntax = "proto3";
 package HipTviKTkIkcmyuMCIAIDkeOOQQYyJne;
 
 service Model {
-  rpc pixelate (DetectionFrameSet) returns (ImageSet);
-  rpc detect (ImageSet) returns (ImageSet);
+  rpc pixelate (DetectionFrameSet) returns (Image);
+  rpc detect (Image) returns (Image);
 }
 
 message DetectionFrameSet {
@@ -19,10 +19,6 @@ message DetectionFrame {
   int64 h = 6;
   string mime_type = 7;
   bytes image_binary = 8;
-}
-
-message ImageSet {
-  repeated Image Images = 1;
 }
 
 message Image {
