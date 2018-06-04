@@ -1,12 +1,8 @@
 syntax = "proto3";
-package nnjTkneQgiZzmyiPFLQEudNBTxOvOBrK;
+package wvHeYuPGGFSeCSLULBxxJquKipiUljuZ;
 
 service Model {
-  rpc detect (ImageSet) returns (DetectionFrameSet);
-}
-
-message ImageSet {
-  repeated Image Images = 1;
+  rpc detect (Image) returns (DetectionFrameSet);
 }
 
 message Image {
