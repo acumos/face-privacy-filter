@@ -50,6 +50,10 @@ or the mirrored [Acumos Github repository](https://github.com/acumos/face-privac
 It utilizes a protobuf javascript library and processes
 input images to detect all faces within an image.
 
+Once deployed, you can quickly jump to the
+[default webhost page](http://htmlpreview.github.io/?https://github.com/acumos/face-privacy-filter/blob/master/web_demo/face-privacy.html)
+and point to your model for a demo; see [tutorial lesson 3](tutorials/lesson3.md) for more details.
+
 ## Performance
 As this model wraps a preexisting cascade, no formal testing evaluation
 was performed.  However, experimental usage indicates the following highlights.
@@ -109,7 +113,6 @@ demographics but not recognition) may also be easily employed with this
 system, should the right method arise.
 
 
-
 # Source Installation
 This section is useful for source-based installations and is not generally intended
 for catalog documentation.
@@ -123,19 +126,23 @@ subsequent image processing.  This module does not support training
 at this time and instead uses a pre-trained face cascade, which is
 included (from OpenCV) in this module.
 
-### Package dependencies
+## Package dependencies
 Package dependencies for the core code and testing have been flattened into a
 single file for convenience. Instead of installing this package into your
 your local environment, execute the command below.
 
+**Note:** If you are using an [anaconda-based environment](https://anaconda.org),
+you may want to try installing with conda first and then pip.
+to mixing mixing package stores.
 ```
-pip install -r requirments.txt
+conda install --yes --file requirements.txt  # suggested first step if you're using conda
 ```
 
-**Note:** If you are using an [anaconda-based environment](https://anaconda.org),
-you may want to try
-installing these packages [directly](https://docs.anaconda.com/anaconda-repository/user-guide/tasks/pkgs/download-install-pkg).
-to avoid mixing of `pip` and `conda` package stores.
+Installation of the package requirements for a new environment.
+```
+pip install -r requirements.txt
+```
+
 
 ### Usage
 This package contains runable scripts for command-line evaluation,
@@ -144,12 +151,14 @@ uses.   All functionality is encapsulsted in the `filter_image.py`
 script and has the following arguments.
 
 ```
-usage: filter_image.py [-h] [-p PREDICT_PATH] [-i INPUT]
-                       [-c] [-s] [-f {detect,pixelate}]
-                       [-a PUSH_ADDRESS] [-d DUMP_MODEL]
+usage: filter_image.py [-h] [-p PREDICT_PATH] [-i INPUT] [-c]
+                       [-f {detect,pixelate}] [-s] [-a PUSH_ADDRESS]
+                       [-A AUTH_ADDRESS] [-d DUMP_MODEL]
 
 optional arguments:
   -h, --help            show this help message and exit
+
+main execution and evaluation functionality:
   -p PREDICT_PATH, --predict_path PREDICT_PATH
                         save detections from model (model must be provided via
                         'dump_model')
@@ -157,12 +166,17 @@ optional arguments:
                         absolute path to input data (image or csv, only during
                         prediction / dump)
   -c, --csv_input       input as CSV format not an image
-  -s, --suppress_image  do not create an extra row for a returned image
   -f {detect,pixelate}, --function {detect,pixelate}
                         which type of model to generate
+  -s, --suppress_image  do not create an extra row for a returned image
+
+model creation and configuration options:
   -a PUSH_ADDRESS, --push_address PUSH_ADDRESS
                         server address to push the model (e.g.
                         http://localhost:8887/v2/models)
+  -A AUTH_ADDRESS, --auth_address AUTH_ADDRESS
+                        server address for login and push of the model (e.g.
+                        http://localhost:8887/v2/auth)
   -d DUMP_MODEL, --dump_model DUMP_MODEL
                         dump model to a pickle directory for local running
 ```

@@ -96,14 +96,16 @@ def main(config={}):
     from face_privacy_filter._version import MODEL_NAME
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--predict_path', type=str, default='', help="save detections from model (model must be provided via 'dump_model')")
-    parser.add_argument('-i', '--input', type=str, default='', help='absolute path to input data (image or csv, only during prediction / dump)')
-    parser.add_argument('-c', '--csv_input', dest='csv_input', action='store_true', default=False, help='input as CSV format not an image')
-    parser.add_argument('-s', '--suppress_image', dest='suppress_image', action='store_true', default=False, help='do not create an extra row for a returned image')
-    parser.add_argument('-f', '--function', type=str, default='detect', help='which type of model to generate', choices=['detect', 'pixelate'])
-    parser.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default=os.getenv('ACUMOS_PUSH', ""))
-    parser.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/v2/auth)', default=os.getenv('ACUMOS_AUTH', ""))
-    parser.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
+    submain = parser.add_argument_group('main execution and evaluation functionality')
+    submain.add_argument('-p', '--predict_path', type=str, default='', help="save detections from model (model must be provided via 'dump_model')")
+    submain.add_argument('-i', '--input', type=str, default='', help='absolute path to input data (image or csv, only during prediction / dump)')
+    submain.add_argument('-c', '--csv_input', dest='csv_input', action='store_true', default=False, help='input as CSV format not an image')
+    submain.add_argument('-f', '--function', type=str, default='detect', help='which type of model to generate', choices=['detect', 'pixelate'])
+    submain.add_argument('-s', '--suppress_image', dest='suppress_image', action='store_true', default=False, help='do not create an extra row for a returned image')
+    subopts = parser.add_argument_group('model creation and configuration options')
+    subopts.add_argument('-a', '--push_address', help='server address to push the model (e.g. http://localhost:8887/v2/models)', default=os.getenv('ACUMOS_PUSH', ""))
+    subopts.add_argument('-A', '--auth_address', help='server address for login and push of the model (e.g. http://localhost:8887/v2/auth)', default=os.getenv('ACUMOS_AUTH', ""))
+    subopts.add_argument('-d', '--dump_model', help='dump model to a pickle directory for local running', default='')
     config.update(vars(parser.parse_args()))     # pargs, unparsed = parser.parse_known_args()
 
     if not config['predict_path']:
@@ -126,7 +128,7 @@ def main(config={}):
 
     # formulate the pipeline to be used
     model_name = MODEL_NAME + "_" + config['function']
-    if config['push_address']:
+    if config['push_address'] and config['auth_address']:
         from acumos.session import AcumosSession
         print("Pushing new model to '{:}'...".format(config['push_address']))
         session = AcumosSession(push_api=config['push_address'], auth_api=config['auth_address'])

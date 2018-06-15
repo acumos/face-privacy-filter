@@ -44,6 +44,18 @@ python face_privacy_filter/filter_image.py -f detect  -d model_detect
 python face_privacy_filter/filter_image.py -f pixelate -d model_pix
 ```
 
+Below is an extended for training a model, dumping it to disk, and pushing that model. **(recommended)**
+```
+export ACUMOS_USERNAME="user"; \
+export ACUMOS_PASSWORD="password";
+or
+export ACUMOS_TOKEN="a_very_long_token";
+
+export ACUMOS_PUSH="https://acumos-challenge.org/onboarding-app/v2/models"; \
+export ACUMOS_AUTH="https://acumos-challenge.org/onboarding-app/v2/auth"; \
+python face_privacy_filter/filter_image.py -f detect
+```
+
 
 ## In-place Evaluation
 In-place evaluation **will utilize** a serialized version of the model and load

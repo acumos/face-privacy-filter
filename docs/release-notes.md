@@ -20,6 +20,10 @@
 
 # Face Privacy Filter Release Notes
 ## 0.3
+### 0.3.3
+* Clean up documentation for install and parameter descriptions
+* Add documentation and functionality for environment variables in push request
+
 ### 0.3.2
 * Minor updates to web JS demo pages for pending recognition model
 * *Type Change* rename input and output types to **region** monikers to better reflect target
