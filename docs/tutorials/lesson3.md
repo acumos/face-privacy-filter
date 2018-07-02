@@ -20,7 +20,7 @@
 
 # Web Demo
 This web page sample allows the user to submit an image to
-an image classification and image mood classification service
+a face detection and a face pixelation service
 in serial progression.
 
 ** Image Copyrights May Apply ** - the included sample videos may carry
@@ -56,7 +56,7 @@ python -m http.server 5000
 
 Afterwards, just point your browser at `http://localhost:5000/face-privacy.html`.
 
-## Example mood classification demo (docker and protobuf)
+## Example face privacy demo (docker and protobuf)
 To customize this demo, one should change either the included javascript
 or simply update the primary classification URL on the page itself during runtime.
 This demo utilizes the [javascript protobuf library](https://github.com/dcodeIO/ProtoBuf.js/)
@@ -94,7 +94,7 @@ protoc --decode=HipTviKTkIkcmyuMCIAIDkeOOQQYyJne.Image model.pixelate.proto < pr
 so be sure to check the contents of the current `.proto` file.
 
 
-## Example mood classification demo (HTTP parameters)
+## Example face privacy demo (HTTP parameters)
 To customize this demo, one should change either the included javascript
 or simply update the primary classification URL on the page itself during runtime.
 
