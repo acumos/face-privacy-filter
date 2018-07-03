@@ -8,7 +8,7 @@
 .. you may not use this file except in compliance with the License.
 .. You may obtain a copy of the License at
 ..
-..      http://creativecommons.org/licenses/by/4.0
+.. http://creativecommons.org/licenses/by/4.0
 ..
 .. This file is distributed on an "AS IS" BASIS,
 .. WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,13 +16,11 @@
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
 
-========
 Tutorial
-========
+--------
 
 .. toctree::
        :maxdepth: 2
 
-       lesson1
-       lesson2
-       lesson3
+       deployment
+       demonstration
