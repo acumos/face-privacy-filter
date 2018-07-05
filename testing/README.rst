@@ -1,4 +1,3 @@
-<!---
 .. ===============LICENSE_START=======================================================
 .. Acumos CC-BY-4.0
 .. ===================================================================================
@@ -16,16 +15,11 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
--->
 
-# face-privacy-filter
-A model for face detection and suppression.
+.. _testing:
 
-* [Overall Documentation](docs/face-privacy-filter.md)
-* [Release Notes](docs/release-notes.md)
-* Tutorials
-    * [Deployment and Running](docs/tutorials/lesson1.md),
-    * [Swagger API server](docs/tutorials/lesson2.md), and
-    * [Web Application](docs/tutorials/lesson3.md)
-
-
+=======
+Testing
+=======
+This directory provides in-place testing. Please consult the
+`main documentation <../docs/image-mood-classifier.rst>`__ for more information.
