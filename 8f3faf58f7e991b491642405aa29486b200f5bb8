@@ -1,0 +1,395 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5276a60a_988f806b",
+        "filename": "docs/face-privacy-filter.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 65,
+        "startChar": 39,
+        "endLine": 65,
+        "endChar": 88
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5541fe96_d4d99888",
+        "filename": "docs/face-privacy-filter.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 176,
+        "startChar": 22,
+        "endLine": 176,
+        "endChar": 77
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8eff0c98_4e0efb1e",
+        "filename": "docs/face-privacy-filter.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 191,
+        "startChar": 4,
+        "endLine": 191,
+        "endChar": 40
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67c155a0_371b49da",
+        "filename": "docs/face-privacy-filter.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 197,
+        "startChar": 3,
+        "endLine": 197,
+        "endChar": 62
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "422ffd5d_deb4bb86",
+        "filename": "docs/face-privacy-filter.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 199,
+        "startChar": 2,
+        "endLine": 199,
+        "endChar": 59
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "75b14fa7_a28df861",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "the \"\u003d\" sign should only be as long as the text",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 60
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2c3604d7_c163e66d",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 43
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cab8e5f6_39482d2f",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "what is this supposed to link to? an image? This element doesn\u0027t render as an image or a link that goes anywhere. See:\n\nhttps://logs.acumos.org/production/vex-yul-acumos-jenkins-1/documentation-rtd-verify-master/832/html/submodules/face-privacy-filter/docs/tutorials/demonstration.html#example-face-privacy-demo-docker-and-protobuf",
+      "range": {
+        "startLine": 109,
+        "startChar": 2,
+        "endLine": 109,
+        "endChar": 52
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "993fdbd8_7ca9904c",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 154,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 23
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a2f871f9_08a94507",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 157,
+        "startChar": 2,
+        "endLine": 157,
+        "endChar": 62
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d4c972e9_5ea84759",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 159,
+        "startChar": 3,
+        "endLine": 159,
+        "endChar": 65
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c6ebbb6_7eb35418",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 161,
+        "startChar": 3,
+        "endLine": 161,
+        "endChar": 64
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c1894d23_e8cd739d",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 163,
+        "startChar": 2,
+        "endLine": 163,
+        "endChar": 78
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7b9947fe_217453f5",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 165,
+        "startChar": 3,
+        "endLine": 165,
+        "endChar": 89
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be100adb_02d360b6",
+        "filename": "docs/tutorials/demonstration.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "this throws a 404",
+      "range": {
+        "startLine": 167,
+        "startChar": 3,
+        "endLine": 167,
+        "endChar": 78
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eaaca4d7_7bd9e368",
+        "filename": "docs/tutorials/deployment.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "404 not found",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 37
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "903c9bca_209cd4f9",
+        "filename": "docs/tutorials/deployment.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 94
+      },
+      "writtenOn": "2018-07-05T16:42:57Z",
+      "side": 1,
+      "message": "404 not found",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 54
+      },
+      "revId": "8f3faf58f7e991b491642405aa29486b200f5bb8",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
