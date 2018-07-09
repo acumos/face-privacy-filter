@@ -1,4 +1,3 @@
-<!---
 .. ===============LICENSE_START=======================================================
 .. Acumos CC-BY-4.0
 .. ===================================================================================
@@ -16,10 +15,22 @@
 .. See the License for the specific language governing permissions and
 .. limitations under the License.
 .. ===============LICENSE_END=========================================================
--->
 
-# testing
-This directory provides a simple web server for demonstrating an image-based classifier example.
-This web demo will launch an application with a swagger page.
+|Build Status|
 
-Please consult the [tutorial documentation](../docs/tutorials/lesson2.md) for more information.
+face-privacy-filter
+===================
+
+A model for face detection and suppression.
+
+-  `Overall Documentation <docs/face-privacy-filter.rst>`__
+-  `Release Notes <docs/release-notes.rst>`__
+-  `Tutorials <docs/tutorials/index.rst>`__
+
+   -  `Deployment and Running <docs/tutorials/deployment.rst>`__,
+   -  `Web Application <docs/tutorials/demonstration.rst>`__
+
+
+.. |Build Status| image:: https://jenkins.acumos.org/buildStatus/icon?job=face-privacy-filter-tox-verify-master
+   :target: https://jenkins.acumos.org/job/face-privacy-filter-tox-verify-master/
+

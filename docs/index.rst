@@ -23,6 +23,6 @@ Face Privacy Filter
 .. toctree::
        :maxdepth: 2
 
-       release-notes
        face-privacy-filter
        tutorials/index
+       release-notes
