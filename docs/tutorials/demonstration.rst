@@ -74,6 +74,19 @@ Afterwards, just point your browser at
 ``http://localhost:5000/face-privacy.html``.
 
 
+Usage of protobuf binaries for testing
+--------------------------------------
+Binary (protobuf encoded) data can be downloaded from the web page or directly with curl.
+Two demonstration binaries have been included in the source repository for testing.
+
+- ``protobuf.Image.bin`` - a protobuf-encoded image of Ellen DeGeneres
+- ``protobuf.RegionDetectionSet.bin`` - a protobuf-encoded region set from the reunion example
+
+Within the webpage demo, simply select the correct protobuf method and then drag and
+drop the binary file into the ``Protobuf Payload Input`` file uploader.  It will be
+immediately uploaded through javascript to your specified ``Transform Url``.
+
+
 Example face privacy demo (docker and protobuf)
 ===============================================
 
