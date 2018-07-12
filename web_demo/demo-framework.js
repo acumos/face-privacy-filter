@@ -441,7 +441,6 @@ function doPostBlob(blobData)
 
 function doPostPayload(sendPayload, domHeaders, dstDiv, dstImg, imgPlaceholder)
 {
-
     var hd = $(document.body).data('hdparams');
     hd.imageIsWaiting = true;
 
@@ -547,11 +546,13 @@ function downloadBlobIn() {
 function downloadBlobProto() {
     var namePackage = $(document.body).data('hdparams').protoKeys[0];
     var pathProto = $(document.body).data('hdparams').protoObj[namePackage]['path'];
-    $.get(pathProto, function(data) {
+    protobuf.util.fetch(pathProto, {binary:true}, function(statusStr, data) {
+    console.log(statusStr);
+    console.log(data);
         var fileBase = pathProto.split(/[\\\/]/);       // added 7/11/18 for proto context
         fileBase = fileBase[fileBase.length - 1];
         return downloadBlob(data, fileBase, "text/plain");
-    }, 'text');
+    });
 }
 
 
