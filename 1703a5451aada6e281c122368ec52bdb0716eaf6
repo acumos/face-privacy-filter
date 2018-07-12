@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea5757e9_a5898b3b",
+        "filename": "web_demo/demo-framework.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2018-07-12T18:43:33Z",
+      "side": 1,
+      "message": "maybe you don\u0027t want to log the data to the console every time??",
+      "revId": "1703a5451aada6e281c122368ec52bdb0716eaf6",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
