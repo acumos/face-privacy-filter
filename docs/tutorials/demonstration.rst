@@ -172,7 +172,19 @@ visualize the results of image classification.
 
 
 .. image:: example_running.jpg
-    :alt: example web application with *awe* mood
+    :alt: example web application with blurring activated
     :width: 200
 
+
+Reuse with object detectors
+---------------------------
+This framework can be used to demonstrate other detector and manipulation models 
+as well.  If the detect model included in this repo is used, faces can be detected
+and illustrated as shown below.  The example below shows use of the
+relevant endpoint and ``.proto`` file (also included in this sample).
+
+.. _demonstration-face-privacy_running_example_obj:
+.. image:: example_running_detect.jpg
+    :alt: example web application detecting faces
+    :width: 200
 

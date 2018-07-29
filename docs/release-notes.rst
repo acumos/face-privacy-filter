@@ -26,6 +26,7 @@ Face Privacy Filter Release Notes
 =====
 
 -  Clean up tutorial documentation naming and remove deprecated swagger demo app
+-  Standardize demo CSS, add region drawing to demo page
 
 0.3.3
 =====

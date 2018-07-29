@@ -44,7 +44,34 @@ $(document).ready(function() {
         urlDefault = "http://localhost:8884/classify";
     demo_init({
         classificationServer: urlDefault,
-        protoList: [["model.pixelate.proto", true], ["model.detect.proto", false], ["model.recognize.proto", false] ]
+        protoList: [["model.pixelate.proto", true], ["model.detect.proto", false], ["model.recognize.proto", false] ],
+        mediaList: [
+            {
+                'img': 'images/face_reunion.jpg',
+                'source': 'https://flic.kr/p/bEgYbs',
+                'name': 'reuninon (flickr)'
+            },
+            {
+                'img': 'images/face_family.jpg',
+                'source': 'https://www.pexels.com/photo/adult-affection-beautiful-beauty-265764',
+                'name': 'family (pexels)'
+            },
+            {
+                'img': 'images/commercial.jpg',
+                'movie': "images/commercial.mp4",
+                'source': 'https://www.youtube.com/watch?v=34KfCNapnUg',
+                'name': 'family (pexels)'
+            },
+            {
+                'img': 'images/face_Schwarzenegger.jpg',
+                'source': 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg',
+                'name': 'Schwarzenegger (wikipedia)'
+            },            {
+                'img': 'images/face_DeGeneres.jpg',
+                'source': 'https://en.wikipedia.org/wiki/Ellen_DeGeneres#/media/File:Ellen_DeGeneres-2009.jpg',
+                'name': 'DeGeneres (wikipedia)'
+            },
+        ]
     });
 });
 
@@ -137,6 +164,11 @@ function processResult(data, dstDiv, methodKeys, dstImg, imgPlaceholder) {
                 domRow.append($("<td />").html(!field_data[1] ?
                     val[field_data[0]] : val[field_data[0]].length + " items"));
             });
+            if (val.x && val.y) {  //valid bounding box examples?
+                canvas_rect(false, val.x, val.y, val.w, val.h, hd.colorSet[idx % hd.colorSet.length]);
+                domRow.children(":nth-child(2)").append($("<div class='colorblock'/>").css(
+                    "background-color", hd.colorSet[idx % hd.colorSet.length]));
+            }
             domTable.append(domRow);
         });
         dstDiv.empty().append($("<strong />").html("Results")).show();
@@ -165,3 +197,5 @@ function processResult(data, dstDiv, methodKeys, dstImg, imgPlaceholder) {
         dstImg.attr('src', "data:"+respImage['mime_type']+";base64,"+respImage['image_binary']).removeClass('workingImage');
     }
 }
+
+

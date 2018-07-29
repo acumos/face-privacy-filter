@@ -28,7 +28,7 @@ E. Zavesky 10/17/17
 Rewrite to utilize simple image-based processing steps.
 -->
 <title>Face Privacy Processing</title>
-<link rel="stylesheet" type="text/css" href="face-privacy.css" />
+<link rel="stylesheet" type="text/css" href="demo-framework.css" />
 </head>
 <body>
 <div class="mediaRibbon">
@@ -37,12 +37,12 @@ Rewrite to utilize simple image-based processing steps.
             <source id="mp4" src="images/commercial.mp4" type="video/mp4"></source>
             Your browser does not support the video tag. Please use Chrome or Firefox.
         </video>
-        <canvas id="srcImgCanvas" width="380" height="270" ></canvas>
         <span>raw image</span>
+        <canvas id="srcImgCanvas" width="380" height="270" crossorigin></canvas>
     </div>
     <div>
-        <img id="destImg" width="380" height="270" crossorigin />
         <span>post-processed image</span>
+        <img id="destImg" width="380" height="270" crossorigin />
     </div>
 </div>
 <br />
@@ -54,30 +54,6 @@ Rewrite to utilize simple image-based processing steps.
 <hr  />
 <div id="sourceRibbon" class="mediaRibbon">
     <span class="tiny">Select an image for analysis or upload your own!</span><br />
-    <div>
-        <img src="images/face_reunion.jpg" />
-        <span><a href="https://flic.kr/p/bEgYbs" target="_new">flickr source</a></span>
-    </div>
-    <div>
-        <img src="images/face_family.jpg" />
-        <span><a href="https://www.pexels.com/photo/adult-affection-beautiful-beauty-265764/" target="_new">pexels source</a></span>
-    </div>
-    <div>
-        <img src="images/commercial.jpg" movie="images/commercial.mp4" />
-        <span><a href="https://www.youtube.com/watch?v=34KfCNapnUg" target="_new">youtube source</a></span>
-    </div>
-    <div>
-        <img src="images/face_Schwarzenegger.jpg" />
-        <span><a href="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/A._Schwarzenegger.jpg/220px-A._Schwarzenegger.jpg" target="_new">wikimedia source</a></span>
-    </div>
-    <div>
-        <img src="images/face_DeGeneres.jpg" />
-        <span><a href="https://en.wikipedia.org/wiki/Ellen_DeGeneres#/media/File:Ellen_DeGeneres-2009.jpg" target="_new">wikipedia source</a></span>
-    </div>
-    <div>
-        <label>Custom Upload</label><br/>
-        <input type="file" id="imageLoader" name="imageLoader"/>
-    </div>
 </div>
     <br />
     <span class="tiny"><em>Note: These sample images are copyright of their original authors and are provided
@@ -110,7 +86,7 @@ Rewrite to utilize simple image-based processing steps.
     Face privacy processing using <em>detected faces</em> and a subsequent processing operation.
 <br/>
 <br/>
-<a href='http://www.research.att.com/projects/Video/'>Video and Multimedia Technologies Research</a>
+<a href='http://www.research.att.com/sites/labs_research/video_media_analytics'>Video and Multimedia Technologies Research</a>
 </div>
 <!-- move script to buttom for faster page load --->
 <script type="text/javascript" src="jquery.js"></script>
