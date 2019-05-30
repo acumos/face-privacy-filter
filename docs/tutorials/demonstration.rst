@@ -110,11 +110,27 @@ model and this web page are using the same ``.proto`` file.
 
       ::
 
-          urlDefault: "http://localhost:8884/transform",
+          urlDefault: "http://localhost:8884/model/methods/detect",
 
 -  view the page ``face-privacy.html`` in a Crome or Firefox browser
 -  you can switch between a few sample images or upload your own by
    clicking on the buttons below the main image window
+
+Compatibility
+-------------
+If you want to run against the Boreas model runner you must set the URL to end
+with /model/methods/detect. The key is that in Boreas release the model runner
+api has changed. You can see the swagger for the model if you visit the source
+model's swagger.
+
+If you have a model that was onboarded using Athena release you do not need
+the /model/methods check. Use /detect instead. Another change that was made
+in Boreas model runner was that you must send the http headers before the
+default was protobuf. These headers will change automatically when use use
+/model/methods/detect as the URL path.
+
+    - Content-type: application/vnd.google.protobuf
+    - Accept: application/vnd.google.protobuf
 
 
 Special decoding example

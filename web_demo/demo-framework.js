@@ -63,7 +63,8 @@ function demo_init(objSetting) {
         documentTitle: "Protobuf Demo",
         mediaList: [],        //relative URLs of media files
         protoList: [],        //relative URLs of proto files to include
-        domHeaders: { "Content-type": "text/plain;charset=UTF-8" },   //defaults for headers
+        domHeadersV1: { "Content-type": "text/plain;charset=UTF-8" },   //defaults for headers for model runner without path /model/methods/ context
+        domHeadersV2: { "Content-type": "application/vnd.google.protobuf", Accept: 'application/vnd.google.protobuf' },   //defaults for headers
         // TODO: should be binary ideally, domHeaders: { "Content-type": "application/octet-stream;charset=UTF-8" },   //defaults for headers
 
         // Objects from DOM elements
@@ -419,8 +420,12 @@ function doPostImage(srcCanvas, dstDiv, dstImg, imgPlaceholder) {
     //console.log("[doPostImage]: Selected method ... '"+typeInput+"'");
     if (hd.protoKeys) {     //valid protobuf type?
         var blob = dataURItoBlob(dataURL, true);
-        domHeaders = $.extend({}, hd.domHeaders);       //rewrite with defaults
-
+        var newServer = $(document.body).data('hdparams')['classificationServer'];
+        if(newServer.indexOf('/model/methods')!== -1){
+            domHeaders = $.extend({}, hd.domHeadersV2);
+        }else{
+            domHeaders = $.extend({}, hd.domHeadersV1);
+        }
         // fields from .proto file at time of writing...
         // message Image {
         //   string mime_type = 1;
