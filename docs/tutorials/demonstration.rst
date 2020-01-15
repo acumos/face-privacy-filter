@@ -28,10 +28,6 @@ Web Demo
 This web page sample allows the user to submit an image to a face
 detection and a face pixelation service in serial progression.
 
-* ***Image Copyrights May Apply*** - the included sample videos may
-carry additional copyright restrictions and are not meant for public resale or
-consumption.
-
 Browser Interaction
 ===================
 
