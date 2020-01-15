@@ -192,7 +192,7 @@ detected image regions.
 Metadata Examples
 =================
 
--  example detect catalog image - `url source <https://flic.kr/p/xqw25C>`__
+-  example detect catalog image - `url source <https://www.pexels.com/photo/close-up-photography-of-man-wearing-sunglasses-1212984/>`__
 -  example blur catalog image - `url source <https://flic.kr/p/bEgYbs>`__
 
 

@@ -49,7 +49,12 @@ $(document).ready(function() {
             {
                 'img': 'images/face_reunion.jpg',
                 'source': 'https://flic.kr/p/bEgYbs',
-                'name': 'reuninon (flickr)'
+                'name': 'reunion (flickr)'
+            },
+            {
+                'img': 'images/face_glasses.jpg',
+                'source': 'https://www.pexels.com/photo/close-up-photography-of-man-wearing-sunglasses-1212984/',
+                'name': 'glasses (pexels)'
             },
             {
                 'img': 'images/face_family.jpg',
@@ -60,7 +65,7 @@ $(document).ready(function() {
                 'img': 'images/commercial.jpg',
                 'movie': "images/commercial.mp4",
                 'source': 'https://www.youtube.com/watch?v=34KfCNapnUg',
-                'name': 'family (pexels)'
+                'name': 'commercial (pexels)'
             },
             {
                 'img': 'images/face_Schwarzenegger.jpg',
